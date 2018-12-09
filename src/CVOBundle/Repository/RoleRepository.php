@@ -1,6 +1,9 @@
 <?php
 
 namespace CVOBundle\Repository;
+use CVOBundle\Entity\Role;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping;
 
 /**
  * RoleRepository
@@ -10,4 +13,8 @@ namespace CVOBundle\Repository;
  */
 class RoleRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function __construct(EntityManagerInterface $em)
+    {
+        parent::__construct($em, new Mapping\ClassMetadata(Role::class));
+    }
 }
