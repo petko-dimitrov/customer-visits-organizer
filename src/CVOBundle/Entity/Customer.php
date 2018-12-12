@@ -74,6 +74,19 @@ class Customer
      */
     private $moreInfo;
 
+
+    /**
+     * @Assert\Length(
+     *      max = 255,
+     *      maxMessage = "Email cannot be longer than {{ limit }} characters"
+     * )
+     *
+     * @var string
+     *
+     * @ORM\Column(name="phone", type="string", length=255, nullable=true)
+     */
+    private $phone;
+
     /**
      * @Assert\Length(
      *      max = 255,
@@ -264,6 +277,24 @@ class Customer
     {
         return $this->moreInfo;
     }
+
+    /**
+     * @return string
+     */
+    public function getPhone()
+    {
+        return $this->phone;
+    }
+
+    /**
+     * @param string $phone
+     */
+    public function setPhone(string $phone)
+    {
+        $this->phone = $phone;
+    }
+
+
 
     /**
      * Set email

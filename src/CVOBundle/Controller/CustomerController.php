@@ -66,4 +66,17 @@ class CustomerController extends Controller
             array('customer_form' => $customerForm->createView()
             , 'errors' => $errors));
     }
+
+    /**
+     * @Route("/all", name="all_customers")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function listAllAction()
+    {
+        $customers = $this->customerService->getAllCustomers();
+
+        return $this->render('customer/all.html.twig',
+            ['customers' => $customers]);
+    }
 }

@@ -12,4 +12,6 @@ interface CustomerServiceInterface
     public function checkCustomer($name);
 
     public function getCustomerById($id);
+
+    public function getAllCustomers();
 }

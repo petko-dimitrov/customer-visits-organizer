@@ -47,7 +47,7 @@ class AddressController extends Controller
         $errors = $validator->validate($address);
 
         if (count($errors) > 0) {
-            return $this->render('customer/add_address.html.twig', array(
+            return $this->render('address/add_address.html.twig', array(
                 'address_form' => $addressForm->createView(),
                 'id' => $id,
                 'errors' => $errors,
@@ -61,7 +61,7 @@ class AddressController extends Controller
             return $this->redirectToRoute('homepage');
         }
 
-        return $this->render('customer/add_address.html.twig',
+        return $this->render('address/add_address.html.twig',
             array('address_form' => $addressForm->createView(),
                 'id' => $id,
                 'errors' => $errors,

@@ -5,6 +5,7 @@ namespace CVOBundle\Entity;
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Security\Core\User\UserInterface;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * User
@@ -24,6 +25,13 @@ class User implements UserInterface
     private $id;
 
     /**
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 255,
+     *      minMessage = "Username must be at least {{ limit }} characters long",
+     *      maxMessage = "Username cannot be longer than {{ limit }} characters"
+     * )
+     *
      * @var string
      *
      * @ORM\Column(name="username", type="string", length=255, unique=true)
@@ -31,6 +39,13 @@ class User implements UserInterface
     private $username;
 
     /**
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 255,
+     *      minMessage = "Password must be at least {{ limit }} characters long",
+     *      maxMessage = "Password cannot be longer than {{ limit }} characters"
+     * )
+     *
      * @var string
      *
      * @ORM\Column(name="password", type="string", length=255)
@@ -38,6 +53,13 @@ class User implements UserInterface
     private $password;
 
     /**
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 255,
+     *      minMessage = "Full name must be at least {{ limit }} characters long",
+     *      maxMessage = "Full name cannot be longer than {{ limit }} characters"
+     * )
+     *
      * @var string
      *
      * @ORM\Column(name="full_name", type="string", length=255)

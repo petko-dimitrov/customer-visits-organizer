@@ -26,6 +26,7 @@ class CustomerType extends AbstractType
                 'format' => 'yyyy-MM-dd',
             ))
             ->add('moreInfo', TextType::class)
+            ->add('phone', TextType::class)
             ->add('email', EmailType::class)
             ->add('website', UrlType::class);
     }

@@ -30,6 +30,16 @@ class UserController extends Controller
 
         $form->handleRequest($request);
 
+        $validator = $this->get('validator');
+        $errors = $validator->validate($user);
+
+        if (count($errors) > 0) {
+            return $this->render('user/register.html.twig', array(
+                'form' => $form->createView(),
+                'errors' => $errors
+            ));
+        }
+
         if ($form->isSubmitted() && $form->isValid()) {
             $username = $form->getData()->getUsername();
             $userToCheck = $this->userService->checkUser($username);
@@ -54,6 +64,8 @@ class UserController extends Controller
             return $this->redirectToRoute('security_login');
         }
 
-        return $this->render('user/register.html.twig', array('form' => $form->createView()));
+        return $this->render('user/register.html.twig', array(
+            'form' => $form->createView(),
+            'errors' => $errors));
     }
 }
