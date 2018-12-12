@@ -3,6 +3,7 @@
 namespace CVOBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Address
@@ -22,6 +23,13 @@ class Address
     private $id;
 
     /**
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 255,
+     *      minMessage = "Town name must be at least {{ limit }} characters long",
+     *      maxMessage = "Town name cannot be longer than {{ limit }} characters"
+     * )
+     *
      * @var string
      *
      * @ORM\Column(name="town", type="string", length=255)
@@ -29,6 +37,13 @@ class Address
     private $town;
 
     /**
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 255,
+     *      minMessage = "Street name must be at least {{ limit }} characters long",
+     *      maxMessage = "Street name cannot be longer than {{ limit }} characters"
+     * )
+     *
      * @var string
      *
      * @ORM\Column(name="street", type="string", length=255)
@@ -36,13 +51,22 @@ class Address
     private $street;
 
     /**
-     * @var int
+     * @Assert\Length(
+     *      max = 255,
+     *      maxMessage = "Street number cannot be longer than {{ limit }} characters"
+     * )
      *
-     * @ORM\Column(name="number", type="integer", nullable=true)
+     * @var string
+     *
+     * @ORM\Column(name="number", type="string", length=255, nullable=true)
      */
     private $number;
 
     /**
+     * @Assert\GreaterThanOrEqual(0,
+     *     message = "Floor cannot be a negative number."
+     * )
+     *
      * @var int
      *
      * @ORM\Column(name="floor", type="integer", nullable=true)
@@ -50,6 +74,10 @@ class Address
     private $floor;
 
     /**
+     * @Assert\GreaterThanOrEqual(0,
+     *     message = "Apartment cannot be a negative number."
+     * )
+     *
      * @var int
      *
      * @ORM\Column(name="apartment", type="integer", nullable=true)

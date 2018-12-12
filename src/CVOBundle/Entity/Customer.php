@@ -4,6 +4,7 @@ namespace CVOBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Customer
@@ -23,6 +24,13 @@ class Customer
     private $id;
 
     /**
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 255,
+     *      minMessage = "Customer name must be at least {{ limit }} characters long",
+     *      maxMessage = "Customer name cannot be longer than {{ limit }} characters"
+     * )
+     *
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255, unique=true)
@@ -30,6 +38,9 @@ class Customer
     private $name;
 
     /**
+     * @Assert\GreaterThan(0,
+     *     message = "The monthly tax must be a positive number."
+     * )
      * @var string
      *
      * @ORM\Column(name="monthly_tax", type="decimal", precision=10, scale=2)
@@ -37,6 +48,7 @@ class Customer
     private $monthlyTax;
 
     /**
+     *
      * @var bool
      *
      * @ORM\Column(name="is_active", type="boolean")
@@ -44,6 +56,10 @@ class Customer
     private $isActive;
 
     /**
+     * @Assert\GreaterThanOrEqual("today",
+     *     message = "The next visit must be today or in the future."
+     * )
+     *
      * @var \DateTime
      *
      * @ORM\Column(name="next_visit", type="date", nullable=true)
@@ -51,6 +67,7 @@ class Customer
     private $nextVisit;
 
     /**
+     *
      * @var string
      *
      * @ORM\Column(name="more_info", type="text", nullable=true)
@@ -58,6 +75,16 @@ class Customer
     private $moreInfo;
 
     /**
+     * @Assert\Length(
+     *      max = 255,
+     *      maxMessage = "Email cannot be longer than {{ limit }} characters"
+     * )
+     *
+     * @Assert\Email(
+     *     message = "The email '{{ value }}' is not a valid email.",
+     *     checkMX = true
+     * )
+     *
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255, nullable=true)
@@ -65,6 +92,15 @@ class Customer
     private $email;
 
     /**
+     * @Assert\Length(
+     *      max = 255,
+     *      maxMessage = "Website cannot be longer than {{ limit }} characters"
+     * )
+     *
+     * @Assert\Url(
+     *    message = "The url '{{ value }}' is not a valid url",
+     * )
+     *
      * @var string
      *
      * @ORM\Column(name="website", type="string", length=255, nullable=true)

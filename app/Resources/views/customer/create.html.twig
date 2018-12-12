@@ -1,0 +1,73 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="container body-content span=8 offset=2">
+        <div class="well">
+            <form class="form-horizontal" action="{{ path('create_customer') }}" method="post">
+                <fieldset>
+                    <legend>Create Customer</legend>
+                    {% for error in errors %}
+                        <div class="alert alert-danger">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                            {{ error.message }}
+                        </div>
+                    {% endfor %}
+
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="name">Name</label>
+                        <div class="col-sm-4 ">
+                            <input class="form-control" id="username" placeholder="Name" name="customer[name]"
+                                   required type="text">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="monthlyTax">Monthly Tax</label>
+                        <div class="col-sm-4 ">
+                            <input class="form-control" id="monthlyTax" placeholder="Monthly Tax"
+                                   name="customer[monthlyTax]"
+                                   required type="number" step="0.01" min="0">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="nextVisit">Next Visit</label>
+                        <div class="col-sm-4 ">
+                            <input class="form-control" id="nextVisit" placeholder="Next Visit"
+                                   name="customer[nextVisit]"
+                                   type="date">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="email">Email</label>
+                        <div class="col-sm-4 ">
+                            <input class="form-control" id="email" placeholder="Email" name="customer[email]"
+                                   type="email">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="website">Website</label>
+                        <div class="col-sm-4 ">
+                            <input class="form-control" id="website" placeholder="Website" name="customer[website]"
+                                   type="url">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="moreInfo">More Info</label>
+                        <div class="col-sm-4">
+                        <textarea class="form-control" rows="6" id="moreInfo"
+                                  name="customer[moreInfo]"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <a class="btn btn-default" href="{{ path('homepage') }}">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Create Customer</button>
+                        </div>
+                    </div>
+
+                    {{ form_row(customer_form._token) }}
+                </fieldset>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+

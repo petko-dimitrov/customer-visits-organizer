@@ -1,6 +1,9 @@
 <?php
 
 namespace CVOBundle\Repository;
+use CVOBundle\Entity\Address;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping;
 
 /**
  * AddressRepository
@@ -10,4 +13,14 @@ namespace CVOBundle\Repository;
  */
 class AddressRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function __construct(EntityManagerInterface $em)
+    {
+        parent::__construct($em, new Mapping\ClassMetadata(Address::class));
+    }
+
+    public function save(Address $address)
+    {
+        $this->_em->persist($address);
+        $this->_em->flush();
+    }
 }

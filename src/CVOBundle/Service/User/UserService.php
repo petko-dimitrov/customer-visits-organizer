@@ -27,11 +27,6 @@ class UserService implements UserServiceInterface
         $this->userRepository->save($user);
     }
 
-    public function login()
-    {
-        // TODO: Implement login() method.
-    }
-
     public function checkUser($username)
     {
         return $this->userRepository->findBy(['username' => $username]);

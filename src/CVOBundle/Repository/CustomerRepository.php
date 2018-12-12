@@ -1,6 +1,9 @@
 <?php
 
 namespace CVOBundle\Repository;
+use CVOBundle\Entity\Customer;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping;
 
 /**
  * CustomerRepository
@@ -10,4 +13,14 @@ namespace CVOBundle\Repository;
  */
 class CustomerRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function __construct(EntityManagerInterface $em)
+    {
+        parent::__construct($em, new Mapping\ClassMetadata(Customer::class));
+    }
+
+    public function save(Customer $customer)
+    {
+        $this->_em->persist($customer);
+        $this->_em->flush();
+    }
 }
