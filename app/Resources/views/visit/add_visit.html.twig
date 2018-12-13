@@ -1,0 +1,77 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <div class="container body-content span=8 offset=2">
+        <div class="well">
+            <form class="form-horizontal" action="{{ path('add_visit', {id: id}) }}" method="post">
+                <fieldset>
+                    <legend>Add Visit for {{ customer.name }}</legend>
+                    {% for error in errors %}
+                        <div class="alert alert-danger">
+                            <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>
+                            {{ error.message }}
+                        </div>
+                    {% endfor %}
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="taxCollected">Tax to Collect</label>
+                        <div class="col-sm-4 ">
+                            <input class="form-control" id="taxCollected" placeholder="Tax to Collect"
+                                   name="visit[taxCollected]"
+                                   required type="number" step="0.01" min="0" value="{{ customer.monthlyTax }}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="date">Date</label>
+                        <div class="col-sm-4 ">
+                            <input class="form-control" id="date" placeholder="Date"
+                                   required name="visit[date]" type="date"
+                                   value="{{ customer.nextVisit|date("F jS \\a\\t g:ia") }}">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="time">Time</label>
+                        <div class="col-sm-4 ">
+                            <input class="form-control" id="time" placeholder="Time"
+                                   name="visit[time]" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="isRegular">Is Regular</label>
+                        <div class="col-sm-4 ">
+                            <input class="form-control" id="isRegular"
+                                   name="visit[isRegular]" type="checkbox" value="true" checked>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="serviceType">Service Type</label>
+                        <div class="col-sm-4 ">
+                            <input class="form-control" id="serviceType" placeholder="Service Type"
+                                   name="visit[serviceType]" type="text">
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <label class="col-sm-4 control-label" for="moreInfo">More Info</label>
+                        <div class="col-sm-4">
+                        <textarea class="form-control" rows="6" id="moreInfo"
+                                  name="visit[moreInfo]"></textarea>
+                        </div>
+                    </div>
+                    <div class="form-group">
+                            <label class="col-sm-4 control-label" for="users">Employees</label>
+                        <div class="col-sm-4">
+                        {{ form_row(form.users, { 'attr': {'class': 'form-control'} }) }}
+                        </div>
+                    </div>
+                    <div class="form-group">
+                        <div class="col-sm-4 col-sm-offset-4">
+                            <a class="btn btn-default" href="{{ path('all_customers') }}">Cancel</a>
+                            <button type="submit" class="btn btn-primary">Add Visit</button>
+                        </div>
+                    </div>
+                    {{ form_row(form._token) }}
+                </fieldset>
+            </form>
+        </div>
+    </div>
+{% endblock %}
+

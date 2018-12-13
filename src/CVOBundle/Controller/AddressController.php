@@ -58,7 +58,7 @@ class AddressController extends Controller
         if ($addressForm->isSubmitted() && $addressForm->isValid()) {
             $this->addressService->addAddress($address, $id);
 
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('add_visit', ['id' => $id]);
         }
 
         return $this->render('address/add_address.html.twig',

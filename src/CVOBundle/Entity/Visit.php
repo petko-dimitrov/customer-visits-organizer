@@ -4,6 +4,8 @@ namespace CVOBundle\Entity;
 
 use Doctrine\Common\Collections\ArrayCollection;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints\Time;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Visit
@@ -23,6 +25,10 @@ class Visit
     private $id;
 
     /**
+     * @Assert\GreaterThanOrEqual(0,
+     *     message = "The tax must not be negative."
+     * )
+     *
      * @var string
      *
      * @ORM\Column(name="tax_collected", type="decimal", precision=10, scale=2)
@@ -30,11 +36,27 @@ class Visit
     private $taxCollected;
 
     /**
+     * @Assert\GreaterThanOrEqual("today",
+     *     message = "The visit must be today or in the future."
+     * )
+     *
      * @var \DateTime
      *
      * @ORM\Column(name="date", type="date")
      */
     private $date;
+
+    /**
+     * @Assert\Length(
+     *      max = 55,
+     *      maxMessage = "Service type cannot be longer than {{ limit }} characters"
+     * )
+     *
+     * @var time
+     *
+     * @ORM\Column(name="time", type="string", length=55, nullable=true)
+     */
+    private $time;
 
     /**
      * @var bool
@@ -44,6 +66,11 @@ class Visit
     private $isRegular;
 
     /**
+     * @Assert\Length(
+     *      max = 255,
+     *      maxMessage = "Service type cannot be longer than {{ limit }} characters"
+     * )
+     *
      * @var string
      *
      * @ORM\Column(name="service_type", type="string", length=255, nullable=true)
@@ -135,6 +162,20 @@ class Visit
     {
         return $this->date;
     }
+
+
+    public function getTime()
+    {
+        return $this->time;
+    }
+
+
+    public function setTime($time)
+    {
+        $this->time = $time;
+    }
+
+
 
     /**
      * Set isRegular

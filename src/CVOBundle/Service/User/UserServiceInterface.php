@@ -13,4 +13,6 @@ interface UserServiceInterface
     public function checkUser($username);
 
     public function checkIfUsers();
+
+    public function getAllUsers();
 }

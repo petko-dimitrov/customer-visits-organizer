@@ -1,6 +1,9 @@
 <?php
 
 namespace CVOBundle\Repository;
+use CVOBundle\Entity\Visit;
+use Doctrine\ORM\EntityManagerInterface;
+use Doctrine\ORM\Mapping;
 
 /**
  * VisitRepository
@@ -10,4 +13,14 @@ namespace CVOBundle\Repository;
  */
 class VisitRepository extends \Doctrine\ORM\EntityRepository
 {
+    public function __construct(EntityManagerInterface $em)
+    {
+        parent::__construct($em, new Mapping\ClassMetadata(Visit::class));
+    }
+
+    public function save(Visit $visit)
+    {
+        $this->_em->persist($visit);
+        $this->_em->flush();
+    }
 }

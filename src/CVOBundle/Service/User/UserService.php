@@ -36,4 +36,9 @@ class UserService implements UserServiceInterface
     {
         return $usersFromDB = $this->userRepository->findAll();
     }
+
+    public function getAllUsers()
+    {
+        return $this->userRepository->findAll();
+    }
 }
