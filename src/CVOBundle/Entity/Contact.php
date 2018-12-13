@@ -3,6 +3,7 @@
 namespace CVOBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Contact
@@ -22,6 +23,13 @@ class Contact
     private $id;
 
     /**
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 255,
+     *      minMessage = "Contact name must be at least {{ limit }} characters long",
+     *      maxMessage = "Contact name cannot be longer than {{ limit }} characters"
+     * )
+     *
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
@@ -29,6 +37,13 @@ class Contact
     private $name;
 
     /**
+     * @Assert\Length(
+     *      min = 1,
+     *      max = 255,
+     *      minMessage = "Phone must be at least {{ limit }} characters long",
+     *      maxMessage = "Phone cannot be longer than {{ limit }} characters"
+     * )
+     *
      * @var string
      *
      * @ORM\Column(name="phone", type="string", length=255)
@@ -36,6 +51,16 @@ class Contact
     private $phone;
 
     /**
+     * @Assert\Length(
+     *      max = 255,
+     *      maxMessage = "Email cannot be longer than {{ limit }} characters"
+     * )
+     *
+     * @Assert\Email(
+     *     message = "The email '{{ value }}' is not a valid email.",
+     *     checkMX = true
+     * )
+     *
      * @var string
      *
      * @ORM\Column(name="email", type="string", length=255, nullable=true)
@@ -43,6 +68,11 @@ class Contact
     private $email;
 
     /**
+     * @Assert\Length(
+     *      max = 255,
+     *      maxMessage = "Email cannot be longer than {{ limit }} characters"
+     * )
+     *
      * @var string
      *
      * @ORM\Column(name="job_title", type="string", length=255, nullable=true)
@@ -50,6 +80,7 @@ class Contact
     private $jobTitle;
 
     /**
+     *
      * @var Customer
      *
      * @ORM\ManyToOne(targetEntity="CVOBundle\Entity\Customer", inversedBy="contacts")

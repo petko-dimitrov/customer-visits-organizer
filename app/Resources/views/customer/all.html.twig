@@ -10,6 +10,7 @@
             <th scope="col">Website</th>
             <th scope="col">Monthly Tax</th>
             <th scope="col">Next Visit</th>
+            <th scope="col">Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -22,6 +23,9 @@
             <td>${{ customer.monthlyTax }}</td>
             <td>{{ customer.nextVisit|date("d-M-Y") }}
                 <a href="{{ path('add_visit', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-success">Change</button></a>
+            </td>
+            <td>
+                <a href="{{ path('add_contact', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-success">Add Contact</button></a>
             </td>
         </tr>
         {% endfor %}

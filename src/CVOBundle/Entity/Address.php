@@ -74,10 +74,6 @@ class Address
     private $floor;
 
     /**
-     * @Assert\GreaterThanOrEqual(0,
-     *     message = "Apartment cannot be a negative number."
-     * )
-     *
      * @var int
      *
      * @ORM\Column(name="apartment", type="integer", nullable=true)
