@@ -11,5 +11,7 @@ interface AddressServiceInterface
 
     public function editAddress(Address $address);
 
+    public function deleteAddress(Address $address);
+
     public function getAddressById($id);
 }

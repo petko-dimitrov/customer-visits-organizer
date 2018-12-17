@@ -4,6 +4,7 @@ namespace CVOBundle\Controller;
 
 use CVOBundle\Entity\Customer;
 use CVOBundle\Form\CustomerType;
+use CVOBundle\Service\Address\AddressServiceInterface;
 use CVOBundle\Service\Customer\CustomerServiceInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
@@ -18,10 +19,13 @@ use Symfony\Component\Routing\Annotation\Route;
 class CustomerController extends Controller
 {
     private $customerService;
+    private $addressService;
 
-    public function __construct(CustomerServiceInterface $customerService)
+    public function __construct(CustomerServiceInterface $customerService,
+                                AddressServiceInterface $addressService)
     {
         $this->customerService = $customerService;
+        $this->addressService = $addressService;
     }
 
     /**
@@ -149,12 +153,16 @@ class CustomerController extends Controller
      */
     public function deleteAction($id)
     {
+        /** @var Customer $customer */
         $customer = $this->customerService->getCustomerById($id);
 
         if ($customer === null) {
             $this->redirectToRoute('all_customers');
         }
 
+        $address = $customer->getAddress();
+
+        $this->addressService->deleteAddress($address);
         $this->customerService->deleteCustomer($customer);
 
         return $this->redirectToRoute('all_customers');

@@ -29,4 +29,10 @@ class AddressRepository extends \Doctrine\ORM\EntityRepository
         $this->_em->merge($address);
         $this->_em->flush();
     }
+
+    public function delete(Address $address)
+    {
+        $this->_em->remove($address);
+        $this->_em->flush();
+    }
 }

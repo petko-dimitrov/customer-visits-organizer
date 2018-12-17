@@ -38,4 +38,9 @@ class AddressService implements AddressServiceInterface
     {
         return $this->addressRepository->find($id);
     }
+
+    public function deleteAddress(Address $address)
+    {
+        return $this->addressRepository->delete($address);
+    }
 }

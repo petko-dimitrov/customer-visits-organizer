@@ -12,7 +12,7 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\Routing\Annotation\Route;
 
 /**
- * @Route("customer")
+ * @Route("contact")
  * Class ContactController
  * @package CVOBundle\Controller
  */
