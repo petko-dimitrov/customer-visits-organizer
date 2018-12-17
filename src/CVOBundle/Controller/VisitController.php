@@ -83,4 +83,19 @@ class VisitController extends Controller
                 'users' => $users
             ));
     }
+
+    /**
+     * @Route("/forthcoming" ,name="forthcoming_visits")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function listForthcomingAction()
+    {
+        /** @var Visit[] $visits */
+        $visits = $this->visitService->getAllForthcoming();
+
+        return $this->render('visit/forthcoming.html.twig', [
+            'visits' => $visits
+        ]);
+    }
 }

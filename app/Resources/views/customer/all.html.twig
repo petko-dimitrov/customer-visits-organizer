@@ -25,7 +25,9 @@
                 <a href="{{ path('add_visit', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-success">Change</button></a>
             </td>
             <td>
-                <a href="{{ path('add_contact', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-success">Add Contact</button></a>
+                <a href="{{ path('view_one', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-primary">More Info</button></a>
+                <a href="{{ path('edit_customer', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-success">Edit</button></a>
+                <a href="{{ path('delete_customer', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-danger">Delete</button></a>
             </td>
         </tr>
         {% endfor %}

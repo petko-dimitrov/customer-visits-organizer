@@ -53,7 +53,7 @@ class CustomerController extends Controller
             if (null != $customerToCheck) {
                 $this->addFlash('message', "Customer with name $name is already registered!");
                 return $this->render("customer/create.html.twig", ['customer_form' => $customerForm->createView()
-                ,'errors' => $errors]);
+                    , 'errors' => $errors]);
             }
 
             $this->customerService->addCustomer($customer);
@@ -78,5 +78,20 @@ class CustomerController extends Controller
 
         return $this->render('customer/all.html.twig',
             ['customers' => $customers]);
+    }
+
+
+    /**
+     * @Route("/view/{id}", name="view_one")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function viewOneAction($id)
+    {
+        $customer = $this->customerService->getCustomerById($id);
+
+        return $this->render('customer/view_one.html.twig',
+            ['customer' => $customer]);
     }
 }

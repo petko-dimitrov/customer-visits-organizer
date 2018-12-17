@@ -21,6 +21,7 @@
                         <a class="navbar-brand" href="{{ path('homepage') }}">Home</a>
                         {% if app.user %}
                             <a class="navbar-brand" href="{{ path('all_customers') }}">All Customers</a>
+                            <a class="navbar-brand" href="{{ path('forthcoming_visits') }}">Visits</a>
                             <a class="navbar-brand" href="{{ path('create_customer') }}">Create Customer</a>
                             <a class="navbar-brand" href="{{ path('security_logout') }}">Logout</a>
                         {% else %}

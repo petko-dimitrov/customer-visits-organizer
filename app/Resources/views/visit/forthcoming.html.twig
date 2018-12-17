@@ -1,0 +1,41 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <table class="table table-hover table-striped table-bordered">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Customer</th>
+            <th scope="col">Date</th>
+            <th scope="col">Time</th>
+            <th scope="col">Is Regular</th>
+            <th scope="col">Service Type</th>
+            <th scope="col">More Info</th>
+            <th scope="col">Users</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for visit in visits %}
+            <tr>
+                <td>{{ visit.customer.name }}</td>
+                <td>{{ visit.date|date("d-M-Y") }}</td>
+                <td>{{ visit.time }}</td>
+                <td>
+                    {% if visit.isRegular %}
+                        Regular
+                    {% else %}
+                        Not Regular
+                    {% endif %}
+                </td>
+                <td>{{ visit.serviceType }}</td>
+                <td>{{ visit.moreInfo }}</td>
+                <td>
+                    {% for user in visit.users %}
+                        {{ user.username }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+{% endblock %}
+

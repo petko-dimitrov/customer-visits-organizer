@@ -8,4 +8,6 @@ use CVOBundle\Entity\Visit;
 interface VisitServiceInterface
 {
     public function addVisit(Visit $visit, $customerId);
+
+    public function getAllForthcoming();
 }

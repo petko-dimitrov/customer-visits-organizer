@@ -1,0 +1,163 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+
+    {#Main info#}
+    <h1>All Info for {{ customer.name }}</h1>
+    <div class="col col-lg-4">
+        <table class="table table-hover table-striped table-bordered">
+            <thead class="thead-dark">
+            <tr>
+                <th colspan="2" scope="col">Customer Info</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">Name</th>
+                <td>{{ customer.name }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Next Visit</th>
+                <td>{{ customer.nextVisit|date("d-M-Y") }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Monthly Tax</th>
+                <td>${{ customer.monthlyTax }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Is Active</th>
+                {% if customer.isActive %}
+                    <td>Yes</td>
+                {% else %}
+                    <td>No</td>
+                {% endif %}
+            </tr>
+            <tr>
+                <th scope="row">Phone Number</th>
+                <td><a href="tel:{{ customer.phone }}">{{ customer.phone }}</a></td>
+            </tr>
+            <tr>
+                <th scope="row">Email</th>
+                <td><a href="mailto:{{ customer.email }}">{{ customer.email }}</a></td>
+            </tr>
+            <tr>
+                <th scope="row">Website</th>
+                <td><a href="{{ customer.website }}" target="_blank">{{ customer.website }}</a></td>
+            </tr>
+            <tr>
+                <th scope="row">More Info</th>
+                <td>{{ customer.moreInfo }}</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="{{ path('edit_customer', {id: customer.id}) }}">
+                        <button type="button" class="btn btn-small btn-success btn-block">Edit</button>
+                    </a>
+                </td>
+                <td>
+                    <a href="{{ path('delete_customer', {id: customer.id}) }}">
+                        <button type="button" class="btn btn-small btn-danger btn-block">Delete</button>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    {#Address#}
+    <div class="col col-lg-4">
+        <table class="table table-hover table-striped table-bordered">
+            <thead>
+            <tr>
+                <th colspan="2" scope="row">Address</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">Town</th>
+                <td>{{ customer.address.town }}</td>
+            </tr>
+            <tr>
+            <tr>
+                <th scope="row">Street</th>
+                <td>{{ customer.address.street }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Number</th>
+                <td>{{ customer.address.number }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Floor</th>
+                <td>{{ customer.address.floor }}</td>
+            </tr>
+            <tr>
+                <th scope="row">Apartment</th>
+                <td>{{ customer.address.apartment }}</td>
+            </tr>
+            <tr>
+                <td>
+                    <a href="#">
+                        <button type="button" class="btn btn-small btn-success btn-block">Edit</button>
+                    </a>
+                </td>
+                <td>
+                    <a href="#">
+                        <button type="button" class="btn btn-small btn-danger btn-block">Delete</button>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    {#Contacts#}
+    <div class="col col-lg-4">
+        <table class="table table-hover table-striped table-bordered">
+            <thead>
+            <tr>
+                <th colspan="2" scope="row">Contacts</th>
+            </tr>
+            </thead>
+            <tbody>
+            {% for contact in customer.contacts %}
+                <tr>
+                    <th scope="row">Name</th>
+                    <td>{{ contact.name }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Job title</th>
+                    <td>{{ contact.jobTitle }}</td>
+                </tr>
+                <tr>
+                    <th scope="row">Phone Number</th>
+                    <td><a href="tel:{{ contact.phone }}">{{ contact.phone }}</a></td>
+                </tr>
+                <tr>
+                    <th scope="row">Email</th>
+                    <td><a href="mailto:{{ contact.email }}">{{ contact.email }}</a></td>
+                </tr>
+                <tr>
+                    <td>
+                        <a href="#">
+                            <button type="button" class="btn btn-small btn-success btn-block">Edit</button>
+                        </a>
+                    </td>
+                    <td>
+                        <a href="#">
+                            <button type="button" class="btn btn-small btn-danger btn-block">Delete</button>
+                        </a>
+                    </td>
+                </tr>
+            {% endfor %}
+            <tr>
+                <td colspan="2">
+                    <a href="{{ path('add_contact', {id: customer.id}) }}">
+                        <button type="button" class="btn btn-small btn-success btn-block">Add Contact</button>
+                    </a>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}
+

@@ -32,4 +32,9 @@ class VisitService implements VisitServiceInterface
 
         $this->visitRepository->save($visit);
     }
+
+    public function getAllForthcoming()
+    {
+        return $this->visitRepository->findForthcoming();
+    }
 }

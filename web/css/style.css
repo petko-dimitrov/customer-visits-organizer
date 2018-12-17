@@ -9,3 +9,7 @@ table {
 thead {
     background-color: #aacd4e;
 }
+
+th {
+    text-align: center;
+}

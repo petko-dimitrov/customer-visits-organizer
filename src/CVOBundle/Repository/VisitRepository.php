@@ -4,6 +4,7 @@ namespace CVOBundle\Repository;
 use CVOBundle\Entity\Visit;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping;
+use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * VisitRepository
@@ -22,5 +23,18 @@ class VisitRepository extends \Doctrine\ORM\EntityRepository
     {
         $this->_em->persist($visit);
         $this->_em->flush();
+    }
+
+    public function findForthcoming()
+    {
+        $query = $this->_em->createQuery(
+            "SELECT v
+                FROM CVOBundle:Visit v
+                WHERE v.date >= :today"
+        );
+
+        $query->setParameter('today', new \DateTime());
+
+        return $query->getResult();
     }
 }
