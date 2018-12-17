@@ -23,4 +23,10 @@ class AddressRepository extends \Doctrine\ORM\EntityRepository
         $this->_em->persist($address);
         $this->_em->flush();
     }
+
+    public function edit(Address $address)
+    {
+        $this->_em->merge($address);
+        $this->_em->flush();
+    }
 }

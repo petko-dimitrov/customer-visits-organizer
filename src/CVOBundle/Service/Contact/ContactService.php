@@ -28,4 +28,19 @@ class ContactService implements ContactServiceInterface
         $contact->setCustomer($customer);
         $this->contactRepository->save($contact);
     }
+
+    public function editContact(Contact $contact)
+    {
+        $this->contactRepository->edit($contact);
+    }
+
+    public function deleteContact(Contact $contact)
+    {
+        $this->contactRepository->delete($contact);
+    }
+
+    public function getContactById($id)
+    {
+        return $this->contactRepository->find($id);
+    }
 }

@@ -83,7 +83,7 @@ class User implements UserInterface
      * @ORM\ManyToMany(targetEntity="\CVOBundle\Entity\Visit", inversedBy="users")
      * @ORM\JoinTable(name="users_visits",
      *      joinColumns={@ORM\JoinColumn(name="user_id", referencedColumnName="id")},
-     *      inverseJoinColumns={@ORM\JoinColumn(name="visit_id", referencedColumnName="id")}
+     *      inverseJoinColumns={@ORM\JoinColumn(name="visit_id", referencedColumnName="id", onDelete="CASCADE")}
      *     )
      */
     private $visits;

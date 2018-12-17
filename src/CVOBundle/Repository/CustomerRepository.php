@@ -23,4 +23,16 @@ class CustomerRepository extends \Doctrine\ORM\EntityRepository
         $this->_em->persist($customer);
         $this->_em->flush();
     }
+
+    public function edit(Customer $customer)
+    {
+        $this->_em->merge($customer);
+        $this->_em->flush();
+    }
+
+    public function delete(Customer $customer)
+    {
+        $this->_em->remove($customer);
+        $this->_em->flush();
+    }
 }

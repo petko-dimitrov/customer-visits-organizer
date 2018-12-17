@@ -28,4 +28,14 @@ class AddressService implements AddressServiceInterface
         $customer->setAddress($address);
         $this->addressRepository->save($address);
     }
+
+    public function editAddress(Address $address)
+    {
+        $this->addressRepository->edit($address);
+    }
+
+    public function getAddressById($id)
+    {
+        return $this->addressRepository->find($id);
+    }
 }

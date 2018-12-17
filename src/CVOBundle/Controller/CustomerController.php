@@ -42,6 +42,7 @@ class CustomerController extends Controller
         if (count($errors) > 0) {
             return $this->render('customer/create.html.twig', array(
                 'customer_form' => $customerForm->createView(),
+                'customer' => $customer,
                 'errors' => $errors,
             ));
         }
@@ -52,8 +53,11 @@ class CustomerController extends Controller
 
             if (null != $customerToCheck) {
                 $this->addFlash('message', "Customer with name $name is already registered!");
-                return $this->render("customer/create.html.twig", ['customer_form' => $customerForm->createView()
-                    , 'errors' => $errors]);
+                return $this->render("customer/create.html.twig", [
+                        'customer_form' => $customerForm->createView(),
+                        'customer' => $customer,
+                        'errors' => $errors
+                    ]);
             }
 
             $this->customerService->addCustomer($customer);
@@ -63,8 +67,9 @@ class CustomerController extends Controller
         }
 
         return $this->render('customer/create.html.twig',
-            array('customer_form' => $customerForm->createView()
-            , 'errors' => $errors));
+            array('customer_form' => $customerForm->createView(),
+                'customer' => $customer,
+                'errors' => $errors));
     }
 
     /**
@@ -93,5 +98,65 @@ class CustomerController extends Controller
 
         return $this->render('customer/view_one.html.twig',
             ['customer' => $customer]);
+    }
+
+    /**
+     * @Route("/edit/{id}", name="edit_customer")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function editAction(Request $request, $id)
+    {
+        $customer = $this->customerService->getCustomerById($id);
+
+        if ($customer === null) {
+            $this->redirectToRoute('all_customers');
+        }
+
+        $form = $this->createForm(CustomerType::class, $customer);
+        $form->handleRequest($request);
+
+        $validator = $this->get('validator');
+        $errors = $validator->validate($customer);
+
+        if (count($errors) > 0) {
+            return $this->render('customer/create.html.twig', array(
+                'customer_form' => $form->createView(),
+                'customer' => $customer,
+                'errors' => $errors,
+            ));
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->customerService->editCustomer($customer);
+
+            return $this->redirectToRoute("view_one", ['id' => $id]);
+        }
+
+        return $this->render('customer/create.html.twig',
+            array('customer_form' => $form->createView(),
+                'customer' => $customer,
+                'errors' => $errors));
+    }
+
+    /**
+     * @Route("/delete/{id}", name="delete_customer")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function deleteAction($id)
+    {
+        $customer = $this->customerService->getCustomerById($id);
+
+        if ($customer === null) {
+            $this->redirectToRoute('all_customers');
+        }
+
+        $this->customerService->deleteCustomer($customer);
+
+        return $this->redirectToRoute('all_customers');
     }
 }

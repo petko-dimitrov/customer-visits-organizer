@@ -35,4 +35,15 @@ class CustomerService implements CustomerServiceInterface
     {
         return $this->customerRepository->findBy([], ['nextVisit' => 'asc']);
     }
+
+    public function editCustomer(Customer $customer)
+    {
+        return $this->customerRepository->edit($customer);
+    }
+
+
+    public function deleteCustomer(Customer $customer)
+    {
+        return $this->customerRepository->delete($customer);
+    }
 }

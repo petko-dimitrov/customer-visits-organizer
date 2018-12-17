@@ -47,7 +47,7 @@ class ContactController extends Controller
         $errors = $validator->validate($contact);
 
         if (count($errors) > 0) {
-            return $this->render('address/add_address.html.twig', array(
+            return $this->render('contact/add_contact.html.twig', array(
                 'form' => $contactForm->createView(),
                 'id' => $id,
                 'errors' => $errors,
@@ -59,14 +59,88 @@ class ContactController extends Controller
 
             $this->contactService->addContact($contact, $id);
 
-            return $this->redirectToRoute('all_customers');
+            return $this->redirectToRoute('view_one', [
+                'id' => $id
+            ]);
         }
 
-        return $this->render('customer/add_contact.html.twig', [
+        return $this->render('contact/add_contact.html.twig', [
             'form' => $contactForm->createView(),
             'id' => $id,
             'errors' => $errors,
             'customer' => $customer
         ]);
+    }
+
+
+    /**
+     * @Route("/edit/{id}", name="edit_contact")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function editAction(Request $request, $id)
+    {
+        /** @var Contact $contact */
+        $contact = $this->contactService->getContactById($id);
+
+        if ($contact === null) {
+            $this->redirectToRoute('all_customers');
+        }
+
+        $customerId = $contact->getCustomer()->getId();
+
+        $form = $this->createForm(ContactType::class, $contact);
+        $form->handleRequest($request);
+
+        $validator = $this->get('validator');
+        $errors = $validator->validate($contact);
+
+        if (count($errors) > 0) {
+            return $this->render('contact/edit.html.twig', array(
+                'form' => $form->createView(),
+                'id' => $id,
+                'customerId' => $customerId,
+                'contact' => $contact,
+                'errors' => $errors,
+            ));
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->contactService->editContact($contact);
+
+            return $this->redirectToRoute("view_one", ['id' => $customerId]);
+        }
+
+        return $this->render('contact/edit.html.twig', array(
+            'form' => $form->createView(),
+            'id' => $id,
+            'customerId' => $customerId,
+            'contact' => $contact,
+            'errors' => $errors,
+        ));
+    }
+
+    /**
+     * @Route("/delete/{id}", name="delete_contact")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function deleteAction($id)
+    {
+        /** @var Contact $contact */
+        $contact = $this->contactService->getContactById($id);
+
+        if ($contact === null) {
+            $this->redirectToRoute('all_customers');
+        }
+
+        $customerId = $contact->getCustomer()->getId();
+
+        $this->contactService->deleteContact($contact);
+
+        return $this->redirectToRoute('view_one', ['id' => $customerId]);
     }
 }

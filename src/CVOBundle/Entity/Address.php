@@ -80,8 +80,6 @@ class Address
      */
     private $apartment;
 
-
-
     /**
      * Get id
      *

@@ -23,4 +23,16 @@ class ContactRepository extends \Doctrine\ORM\EntityRepository
         $this->_em->persist($contact);
         $this->_em->flush();
     }
+
+    public function edit(Contact $contact)
+    {
+        $this->_em->merge($contact);
+        $this->_em->flush();
+    }
+
+    public function delete(Contact $contact)
+    {
+        $this->_em->remove($contact);
+        $this->_em->flush();
+    }
 }

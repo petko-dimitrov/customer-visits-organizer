@@ -84,7 +84,7 @@ class Contact
      * @var Customer
      *
      * @ORM\ManyToOne(targetEntity="CVOBundle\Entity\Customer", inversedBy="contacts")
-     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="customer_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $customer;
 

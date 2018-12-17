@@ -72,7 +72,7 @@ class VisitController extends Controller
 
             $this->visitService->addVisit($visit, $id);
 
-            return $this->redirectToRoute('homepage');
+            return $this->redirectToRoute('all_customers');
         }
 
         return $this->render('visit/add_visit.html.twig',

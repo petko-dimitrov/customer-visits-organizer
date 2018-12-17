@@ -124,7 +124,7 @@ class Customer
      * @var Address
      *
      * @ORM\OneToOne(targetEntity="CVOBundle\Entity\Address")
-     * @ORM\JoinColumn(name="address_id", referencedColumnName="id")
+     * @ORM\JoinColumn(name="address_id", referencedColumnName="id", onDelete="CASCADE")
      */
     private $address;
 

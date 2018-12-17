@@ -8,4 +8,8 @@ use CVOBundle\Entity\Address;
 interface AddressServiceInterface
 {
     public function addAddress(Address $address, $id);
+
+    public function editAddress(Address $address);
+
+    public function getAddressById($id);
 }
