@@ -12,7 +12,7 @@
             <th scope="col">Service Type</th>
             <th scope="col">More Info</th>
             <th scope="col">Users</th>
-            <th scope="col">Status</th>
+            <th scope="col">Actions</th>
         </tr>
         </thead>
         <tbody>
@@ -39,9 +39,13 @@
                     <td>Done</td>
                 {% else %}
                     <td>
-                        {% if byUser or isAdmin %}
+                        {% if byUser or app.getUser().isAdmin() %}
                             <a href="{{ path('finish_visit', {id: visit.id}) }}">
-                                <button type="button" class="btn btn-small btn-success">Mark as Done</button>
+                                <button type="button" class="btn btn-small btn-primary">Finish</button>
+                            </a><a href="{{ path('edit_visit', {id: visit.id}) }}">
+                                <button type="button" class="btn btn-small btn-success">Edit</button>
+                            </a><a href="{{ path('delete_visit', {id: visit.id}) }}">
+                                <button type="button" class="btn btn-small btn-danger">Delete</button>
                             </a>
                         {% else %}
                             Pending

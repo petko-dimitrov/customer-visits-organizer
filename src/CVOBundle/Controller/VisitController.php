@@ -43,7 +43,6 @@ class VisitController extends Controller
     public function createAction(Request $request, $id)
     {
         $customer = $this->customerService->getCustomerById($id);
-        $users = $this->userService->getAllUsers();
         $visit = new Visit();
         $visitForm = $this->createForm(VisitType::class, $visit);
 
@@ -58,7 +57,7 @@ class VisitController extends Controller
                 'id' => $id,
                 'errors' => $errors,
                 'customer' => $customer,
-                'users' => $users
+                'visit' => $visit
             ));
         }
 
@@ -75,13 +74,81 @@ class VisitController extends Controller
             return $this->redirectToRoute('all_customers');
         }
 
-        return $this->render('visit/add_visit.html.twig',
-            array('form' => $visitForm->createView(),
+        return $this->render('visit/add_visit.html.twig', array(
+                'form' => $visitForm->createView(),
                 'id' => $id,
                 'errors' => $errors,
                 'customer' => $customer,
-                'users' => $users
+                'visit' => $visit
             ));
+    }
+
+    /**
+     * @Route("/edit/{id}", name="edit_visit")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param Request $request
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function editAction(Request $request, $id)
+    {
+        /** @var Visit $visit */
+        $visit = $this->visitService->getVisitById($id);
+        $customer = $visit->getCustomer();
+
+        if ($visit === null) {
+            $this->redirectToRoute('forthcoming_visits');
+        }
+
+        $form = $this->createForm(VisitType::class, $visit);
+        $form->handleRequest($request);
+
+        $validator = $this->get('validator');
+        $errors = $validator->validate($visit);
+
+        if (count($errors) > 0) {
+            return $this->render('visit/add_visit.html.twig', array(
+                'form' => $form->createView(),
+                'id' => $id,
+                'errors' => $errors,
+                'customer' => $customer,
+                'visit' => $visit
+            ));
+        }
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $this->visitService->editVisit($visit);
+
+            return $this->redirectToRoute("forthcoming_visits");
+        }
+
+        return $this->render('visit/add_visit.html.twig', array(
+            'form' => $form->createView(),
+            'id' => $id,
+            'errors' => $errors,
+            'customer' => $customer,
+            'visit' => $visit
+        ));
+    }
+
+
+    /**
+     * @Route("/delete/{id}", name="delete_visit")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function deleteAction($id)
+    {
+        $visit = $this->visitService->getVisitById($id);
+
+        if ($visit === null) {
+            $this->redirectToRoute('forthcoming_visits');
+        }
+
+        $this->visitService->deleteVisit($visit);
+
+        return $this->redirectToRoute('forthcoming_visits');
     }
 
     /**
@@ -93,13 +160,10 @@ class VisitController extends Controller
     {
         /** @var Visit[] $visits */
         $visits = $this->visitService->getAllForthcoming();
-        $user = $this->getUser();
-
 
         return $this->render('visit/all_visits.html.twig', [
             'visits' => $visits,
-            'byUser' => false,
-            'isAdmin' => $user->isAdmin()
+            'byUser' => false
         ]);
     }
 
@@ -110,15 +174,13 @@ class VisitController extends Controller
      */
     public function listForthcomingByUserAction()
     {
-        $user = $this->getUser();
-        $userId = $user->getId();
+        $userId = $this->getUser()->getId();
 
         $visits = $this->visitService->getAllForthcomingByUser($userId);
 
         return $this->render('visit/all_visits.html.twig', [
             'visits' => $visits,
-            'byUser' => true,
-            'isAdmin' => $user->isAdmin()
+            'byUser' => true
         ]);
     }
 
@@ -130,12 +192,10 @@ class VisitController extends Controller
     public function listAllAction()
     {
         $visits = $this->visitService->getAll();
-        $user = $this->getUser();
 
         return $this->render('visit/all_visits.html.twig', [
             'visits' => $visits,
-            'byUser' => false,
-            'isAdmin' => $user->isAdmin()
+            'byUser' => false
         ]);
     }
 
@@ -148,13 +208,11 @@ class VisitController extends Controller
     public function listAllByCustomerAction($id)
     {
         $customer = $this->customerService->getCustomerById($id);
-        $user = $this->getUser();
         $visits = $this->visitService->getAllByCustomer($customer);
 
         return $this->render('visit/all_visits.html.twig', [
             'visits' => $visits,
-            'byUser' => false,
-            'isAdmin' => $user->isAdmin()
+            'byUser' => false
         ]);
     }
 

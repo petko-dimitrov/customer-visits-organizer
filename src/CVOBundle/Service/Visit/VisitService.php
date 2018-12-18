@@ -61,4 +61,19 @@ class VisitService implements VisitServiceInterface
     {
         return $this->visitRepository->findBy(['customer' => $customer], ['date' => 'DESC']);
     }
+
+    public function getVisitById($id)
+    {
+        return $this->visitRepository->find($id);
+    }
+
+    public function editVisit(Visit $visit)
+    {
+        return $this->visitRepository->edit($visit);
+    }
+
+    public function deleteVisit(Visit $visit)
+    {
+        return $this->visitRepository->delete($visit);
+    }
 }

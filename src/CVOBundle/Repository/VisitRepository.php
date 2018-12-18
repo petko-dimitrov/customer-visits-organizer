@@ -24,13 +24,26 @@ class VisitRepository extends \Doctrine\ORM\EntityRepository
         $this->_em->flush();
     }
 
+    public function edit(Visit $visit)
+    {
+        $this->_em->merge($visit);
+        $this->_em->flush();
+    }
+
+    public function delete(Visit $visit)
+    {
+        $this->_em->remove($visit);
+        $this->_em->flush();
+    }
+
     public function findForthcoming()
     {
         $query = $this->_em->createQuery(
             "SELECT v
                 FROM CVOBundle:Visit v
                 WHERE v.date >= :today
-                AND v.isFinished = false"
+                AND v.isFinished = false
+                ORDER BY v.date"
         );
 
         $query->setParameter('today', new \DateTime());

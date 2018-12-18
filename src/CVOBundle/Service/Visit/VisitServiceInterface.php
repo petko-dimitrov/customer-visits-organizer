@@ -18,4 +18,10 @@ interface VisitServiceInterface
     public function getAllByCustomer($customer);
 
     public function finishVisit($id);
+
+    public function getVisitById($id);
+
+    public function editVisit(Visit $visit);
+
+    public function deleteVisit(Visit $visit);
 }
