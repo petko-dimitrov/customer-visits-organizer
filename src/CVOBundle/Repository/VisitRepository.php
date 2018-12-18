@@ -4,7 +4,6 @@ namespace CVOBundle\Repository;
 use CVOBundle\Entity\Visit;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping;
-use Symfony\Component\Validator\Constraints\Date;
 
 /**
  * VisitRepository
@@ -30,11 +29,24 @@ class VisitRepository extends \Doctrine\ORM\EntityRepository
         $query = $this->_em->createQuery(
             "SELECT v
                 FROM CVOBundle:Visit v
-                WHERE v.date >= :today"
+                WHERE v.date >= :today
+                AND v.isFinished = false"
         );
 
         $query->setParameter('today', new \DateTime());
 
         return $query->getResult();
     }
+
+    public function findForthcomingByUser($userId)
+    {
+        return $this->createQueryBuilder('v')
+            ->where(':user_id MEMBER OF v.users AND v.isFinished = false')
+            ->setParameter('user_id', $userId)
+            ->orderBy('v.date')
+            ->getQuery()
+            ->getResult();
+    }
+
+
 }

@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
+    <h1>{% if byUser %}My{% endif %} Visits</h1>
     <table class="table table-hover table-striped table-bordered">
         <thead class="thead-dark">
         <tr>
@@ -11,6 +12,7 @@
             <th scope="col">Service Type</th>
             <th scope="col">More Info</th>
             <th scope="col">Users</th>
+            <th scope="col">Status</th>
         </tr>
         </thead>
         <tbody>
@@ -33,6 +35,19 @@
                         {{ user.username }}{% if not loop.last %}, {% endif %}
                     {% endfor %}
                 </td>
+                {% if visit.finished %}
+                    <td>Done</td>
+                {% else %}
+                    <td>
+                        {% if byUser or isAdmin %}
+                            <a href="{{ path('finish_visit', {id: visit.id}) }}">
+                                <button type="button" class="btn btn-small btn-success">Mark as Done</button>
+                            </a>
+                        {% else %}
+                            Pending
+                        {% endif %}
+                    </td>
+                {% endif %}
             </tr>
         {% endfor %}
         </tbody>

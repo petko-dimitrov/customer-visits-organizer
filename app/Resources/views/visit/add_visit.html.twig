@@ -5,7 +5,7 @@
         <div class="well">
             <form class="form-horizontal" action="{{ path('add_visit', {id: id}) }}" method="post">
                 <fieldset>
-                    <legend>Add Visit for {{ customer.name }}</legend>
+                    <legend>Add Visit to {{ customer.name }}</legend>
                     {% for error in errors %}
                         <div class="alert alert-danger">
                             <a href="#" class="close" data-dismiss="alert" aria-label="close">×</a>

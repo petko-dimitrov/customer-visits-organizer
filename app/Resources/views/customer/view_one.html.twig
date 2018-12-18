@@ -17,8 +17,14 @@
                 <td>{{ customer.name }}</td>
             </tr>
             <tr>
-                <th scope="row">Next Visit</th>
-                <td>{{ customer.nextVisit|date("d-M-Y") }}</td>
+                <th scope="row">
+                    Next Visit
+                    <a href="{{ path('all_customer_visits', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-primary">View All</button></a>
+                </th>
+                <td>
+                    {{ customer.nextVisit|date("d-M-Y") }}
+                    <a href="{{ path('add_visit', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-success">Change</button></a>
+                </td>
             </tr>
             <tr>
                 <th scope="row">Monthly Tax</th>

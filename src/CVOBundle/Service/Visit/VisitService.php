@@ -27,8 +27,8 @@ class VisitService implements VisitServiceInterface
         $customer->addVisit($visit);
         $customer->setNextVisit($visit->getDate());
 
+        $visit->setIsFinished(false);
         $visit->setCustomer($customer);
-
 
         $this->visitRepository->save($visit);
     }
@@ -36,5 +36,29 @@ class VisitService implements VisitServiceInterface
     public function getAllForthcoming()
     {
         return $this->visitRepository->findForthcoming();
+    }
+
+    public function finishVisit($id)
+    {
+        /** @var Visit $visit */
+        $visit = $this->visitRepository->find($id);
+        $visit->setIsFinished(true);
+
+        $this->visitRepository->save($visit);
+    }
+
+    public function getAll()
+    {
+        return $this->visitRepository->findBy([], ['date' => 'ASC']);
+    }
+
+    public function getAllForthcomingByUser($userId)
+    {
+        return $this->visitRepository->findForthcomingByUser($userId);
+    }
+
+    public function getAllByCustomer($customer)
+    {
+        return $this->visitRepository->findBy(['customer' => $customer], ['date' => 'DESC']);
     }
 }

@@ -75,6 +75,7 @@ class AddressController extends Controller
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @param Request $request
      * @param $id
+     * @param $addressId
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function editAction(Request $request, $id, $addressId)

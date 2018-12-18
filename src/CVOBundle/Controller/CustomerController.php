@@ -70,10 +70,11 @@ class CustomerController extends Controller
             return $this->redirectToRoute('add_address', ['id' => $id]);
         }
 
-        return $this->render('customer/create.html.twig',
-            array('customer_form' => $customerForm->createView(),
+        return $this->render('customer/create.html.twig', array(
+                'customer_form' => $customerForm->createView(),
                 'customer' => $customer,
-                'errors' => $errors));
+                'errors' => $errors
+        ));
     }
 
     /**
@@ -139,10 +140,11 @@ class CustomerController extends Controller
             return $this->redirectToRoute("view_one", ['id' => $id]);
         }
 
-        return $this->render('customer/create.html.twig',
-            array('customer_form' => $form->createView(),
+        return $this->render('customer/create.html.twig', array(
+                'customer_form' => $form->createView(),
                 'customer' => $customer,
-                'errors' => $errors));
+                'errors' => $errors
+        ));
     }
 
     /**

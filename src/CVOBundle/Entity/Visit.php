@@ -85,6 +85,13 @@ class Visit
     private $moreInfo;
 
     /**
+     * @var bool
+     *
+     * @ORM\Column(name="is_finished", type="boolean")
+     */
+    private $isFinished;
+
+    /**
      * @var ArrayCollection|User[]
      *
      * @ORM\ManyToMany(targetEntity="CVOBundle\Entity\User", mappedBy="visits")
@@ -247,6 +254,22 @@ class Visit
     public function getMoreInfo()
     {
         return $this->moreInfo;
+    }
+
+    /**
+     * @return bool
+     */
+    public function isFinished()
+    {
+        return $this->isFinished;
+    }
+
+    /**
+     * @param bool $isFinished
+     */
+    public function setIsFinished($isFinished)
+    {
+        $this->isFinished = $isFinished;
     }
 
     /**

@@ -93,9 +93,94 @@ class VisitController extends Controller
     {
         /** @var Visit[] $visits */
         $visits = $this->visitService->getAllForthcoming();
+        $user = $this->getUser();
 
-        return $this->render('visit/forthcoming.html.twig', [
-            'visits' => $visits
+
+        return $this->render('visit/all_visits.html.twig', [
+            'visits' => $visits,
+            'byUser' => false,
+            'isAdmin' => $user->isAdmin()
         ]);
+    }
+
+    /**
+     * @Route("/my-visits", name="my_visits")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function listForthcomingByUserAction()
+    {
+        $user = $this->getUser();
+        $userId = $user->getId();
+
+        $visits = $this->visitService->getAllForthcomingByUser($userId);
+
+        return $this->render('visit/all_visits.html.twig', [
+            'visits' => $visits,
+            'byUser' => true,
+            'isAdmin' => $user->isAdmin()
+        ]);
+    }
+
+    /**
+     * @Route("/all", name="all_visits")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function listAllAction()
+    {
+        $visits = $this->visitService->getAll();
+        $user = $this->getUser();
+
+        return $this->render('visit/all_visits.html.twig', [
+            'visits' => $visits,
+            'byUser' => false,
+            'isAdmin' => $user->isAdmin()
+        ]);
+    }
+
+    /**
+     * @Route("/by-customer/{id}" ,name="all_customer_visits")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function listAllByCustomerAction($id)
+    {
+        $customer = $this->customerService->getCustomerById($id);
+        $user = $this->getUser();
+        $visits = $this->visitService->getAllByCustomer($customer);
+
+        return $this->render('visit/all_visits.html.twig', [
+            'visits' => $visits,
+            'byUser' => false,
+            'isAdmin' => $user->isAdmin()
+        ]);
+    }
+
+    /**
+     * @Route("/finish/{id}" ,name="finish_visit")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function finishVisitAction($id)
+    {
+        $this->visitService->finishVisit($id);
+
+        return $this->redirectToRoute('forthcoming_visits');
+    }
+
+
+    /**
+     * @Route("/reschedule" ,name="reschedule_visit")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\RedirectResponse
+     */
+    public function rescheduleVisitAction()
+    {
+     //TODO
+
     }
 }
