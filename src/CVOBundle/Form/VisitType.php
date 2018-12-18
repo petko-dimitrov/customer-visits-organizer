@@ -26,6 +26,7 @@ class VisitType extends AbstractType
             ->add('date', DateType ::class, array(
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',
+                'label' => false
             ))
             ->add('time', TextType::class)
             ->add('isRegular', CheckboxType::class, array(

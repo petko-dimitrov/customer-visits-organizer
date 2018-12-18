@@ -37,9 +37,7 @@
                     <div class="form-group">
                         <label class="col-sm-4 control-label" for="date">Date</label>
                         <div class="col-sm-4 ">
-                            <input class="form-control" id="date" placeholder="Date"
-                                   required name="visit[date]" type="date"
-                                   value="{{ customer.nextVisit|date("F jS \\a\\t g:ia") }}">
+                            {{ form_row(form.date) }}
                         </div>
                     </div>
                     <div class="form-group">
