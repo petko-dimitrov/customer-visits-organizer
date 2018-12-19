@@ -94,6 +94,7 @@ class VisitController extends Controller
     {
         /** @var Visit $visit */
         $visit = $this->visitService->getVisitById($id);
+
         $customer = $visit->getCustomer();
 
         if ($visit === null) {
@@ -101,6 +102,7 @@ class VisitController extends Controller
         }
 
         $form = $this->createForm(VisitType::class, $visit);
+        $this->visitService->deleteVisitUsers($id);
         $form->handleRequest($request);
 
         $validator = $this->get('validator');
@@ -224,21 +226,15 @@ class VisitController extends Controller
      */
     public function finishVisitAction($id)
     {
+        /** @var Visit $visit */
+        $visit = $this->visitService->getVisitById($id);
+
+        if ($visit->getIsRegular() === true) {
+            $this->visitService->scheduleVisit($visit);
+        }
+
         $this->visitService->finishVisit($id);
 
         return $this->redirectToRoute('forthcoming_visits');
-    }
-
-
-    /**
-     * @Route("/reschedule" ,name="reschedule_visit")
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     * @param $id
-     * @return \Symfony\Component\HttpFoundation\RedirectResponse
-     */
-    public function rescheduleVisitAction()
-    {
-     //TODO
-
     }
 }

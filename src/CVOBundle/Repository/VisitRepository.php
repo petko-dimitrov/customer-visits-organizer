@@ -61,5 +61,11 @@ class VisitRepository extends \Doctrine\ORM\EntityRepository
             ->getResult();
     }
 
-
+    public function deleteUsers($visitId)
+    {
+        $connection = $this->_em->getConnection();
+        $statement = $connection->prepare("DELETE FROM users_visits WHERE visit_id = :id");
+        $statement->bindValue('id', $visitId);
+        $statement->execute();
+    }
 }

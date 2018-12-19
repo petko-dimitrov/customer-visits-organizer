@@ -23,7 +23,8 @@
                         {% if app.user %}
                             <a class="navbar-brand" href="{{ path('all_customers') }}">All Customers</a>
                             <a class="navbar-brand" href="{{ path('create_customer') }}">Create Customer</a>
-                            <a class="navbar-brand" href="{{ path('security_logout') }}">Logout</a>
+                            <p class="navbar-brand pull-right">Hello, {{ app.user.username }}</p>
+                            <a class="navbar-brand pull-right" href="{{ path('security_logout') }}">Logout</a>
                     </nav>
                     <nav class="navbar navbar-expand-lg navbar-light bg-light">
                             <a class="navbar-brand" href="{{ path('all_visits') }}">All Visits</a>
@@ -32,8 +33,8 @@
                     </nav>
                         {% else %}
                            <nav class="navbar navbar-expand-lg navbar-light bg-light">
-                                <a class="navbar-brand" href="{{ path('register_user') }}">Register</a>
-                                <a class="navbar-brand" href="{{ path('security_login') }}">Login</a>
+                                <a class="navbar-brand pull-right" href="{{ path('register_user') }}">Register</a>
+                                <a class="navbar-brand pull-right" href="{{ path('security_login') }}">Login</a>
                            </nav>
                         {% endif %}
                 </div>

@@ -24,4 +24,8 @@ interface VisitServiceInterface
     public function editVisit(Visit $visit);
 
     public function deleteVisit(Visit $visit);
+
+    public function scheduleVisit(Visit $visit);
+
+    public function deleteVisitUsers($visitId);
 }
