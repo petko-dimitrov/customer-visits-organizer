@@ -13,6 +13,8 @@ interface VisitServiceInterface
 
     public function getAllForthcomingByUser($userId);
 
+    public function getAllFinished();
+
     public function getAll();
 
     public function getAllByCustomer($customer);

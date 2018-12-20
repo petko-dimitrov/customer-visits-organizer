@@ -36,7 +36,12 @@
                     {% endfor %}
                 </td>
                 {% if visit.finished %}
-                    <td>Done</td>
+                    <td>
+                        Done
+                        <a href="{{ path('add_visit', {id: visit.customer.id}) }}">
+                            <button type="button" class="btn btn-small btn-success">Add Visit</button>
+                        </a>
+                    </td>
                 {% else %}
                     <td>
                         {% if byUser or app.getUser().isAdmin() %}

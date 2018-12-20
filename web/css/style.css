@@ -1,15 +1,41 @@
-body {
-    background-color: lightgreen;
-}
-
 table {
     background-color: beige;
 }
 
 thead {
-    background-color: #aacd4e;
+    background-color: #0088CC;
 }
 
 th {
     text-align: center;
+    color: aquamarine;
+}
+
+.container {
+    background-color: aquamarine;
+}
+
+h1 {
+    color: #0088CC;
+    text-align: center;
+}
+
+fieldset {
+    border: 1px solid #c0c0c0;
+    margin: 0 2px;
+    padding: 0.35em 0.625em 0.75em;
+}
+legend {
+    border: 0;
+    padding: 0;
+}
+
+.navbar-default {
+    background-color: #dd6666;
+    border-color: #E7E7E7;
+}
+
+.navbar-default .navbar-nav > li > a {
+    color: #0088CC;
+    font-size: 1.5em;
 }

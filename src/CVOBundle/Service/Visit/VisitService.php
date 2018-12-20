@@ -52,6 +52,12 @@ class VisitService implements VisitServiceInterface
         return $this->visitRepository->findBy([], ['date' => 'ASC']);
     }
 
+    public function getAllFinished()
+    {
+        return $this->visitRepository->findBy(['isFinished' => true], ['date' => 'DESC']);
+
+    }
+
     public function getAllForthcomingByUser($userId)
     {
         return $this->visitRepository->findForthcomingByUser($userId);
@@ -138,4 +144,5 @@ class VisitService implements VisitServiceInterface
     {
         $this->visitRepository->deleteUsers($visitId);
     }
+
 }

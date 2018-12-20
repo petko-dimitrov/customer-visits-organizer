@@ -187,13 +187,13 @@ class VisitController extends Controller
     }
 
     /**
-     * @Route("/all", name="all_visits")
+     * @Route("/finished", name="finished_visits")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @return \Symfony\Component\HttpFoundation\Response
      */
     public function listAllAction()
     {
-        $visits = $this->visitService->getAll();
+        $visits = $this->visitService->getAllFinished();
 
         return $this->render('visit/all_visits.html.twig', [
             'visits' => $visits,
