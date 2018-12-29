@@ -13,9 +13,15 @@ interface CustomerServiceInterface
 
     public function deleteCustomer(Customer $customer);
 
+    public function archiveCustomer(Customer $customer);
+
+    public function activateCustomer(Customer $customer);
+
     public function checkCustomer($name);
 
     public function getCustomerById($id);
 
     public function getAllCustomers();
+
+    public function getAllArchivedCustomers();
 }

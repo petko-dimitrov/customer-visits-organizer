@@ -1,8 +1,13 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
-    <h1>All Customers</h1>
-    <button type="button" class="btn btn-warning"><a href="{{ path('create_customer') }}">Create Customer</a></button>
+    <h1>All {% if areActive %}Active {% else %}Archived {% endif %}Customers</h1>
+    <button type="button" class="btn btn-light"><a href="{{ path('create_customer') }}">Create Customer</a></button>
+    {% if areActive %}
+        <button type="button" class="btn btn-light"><a href="{{ path('archived_customers') }}">View Archived</a></button>
+    {% else %}
+        <button type="button" class="btn btn-light"><a href="{{ path('all_customers') }}">View Active</a></button>
+    {% endif %}
     <table class="table table-hover table-striped table-bordered">
         <thead class="thead-dark">
         <tr>
@@ -26,7 +31,9 @@
             <td>
                 <a href="{{ path('planned_customer_visits', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-info">Planned</button></a>
                 <a href="{{ path('all_customer_visits', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-primary">Past</button></a>
-                <a href="{{ path('add_visit', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-success">Add</button></a>
+                {% if areActive %}
+                    <a href="{{ path('add_visit', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-success">Add</button></a>
+                {% endif %}
                 {% for visit in customer.visits|sortbyfield('date') %}
                     {% if visit.isFinished == false %}
                         <p>{{ visit.date|date("d-M-Y") }}</p>
@@ -36,7 +43,12 @@
             <td>
                 <a href="{{ path('view_one', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-primary">More Info</button></a>
                 <a href="{{ path('edit_customer', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-success">Edit</button></a>
-                <a href="{{ path('delete_customer', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-danger">Delete</button></a>
+                {% if areActive %}
+                    <a href="{{ path('archive_customer', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-warning">Archive</button></a>
+                {% else %}
+                    <a href="{{ path('activate_customer', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-warning">Activate</button></a>
+                    <a href="{{ path('delete_customer', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-danger">Delete</button></a>
+                {% endif %}
             </td>
         </tr>
         {% endfor %}

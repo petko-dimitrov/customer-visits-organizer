@@ -33,7 +33,12 @@ class CustomerService implements CustomerServiceInterface
 
     public function getAllCustomers()
     {
-        return $this->customerRepository->findAll();
+        return $this->customerRepository->findBy(['isActive' => true], ['name' => 'ASC']);
+    }
+
+    public function getAllArchivedCustomers()
+    {
+        return $this->customerRepository->findBy(['isActive' => false], ['name' => 'ASC']);
     }
 
     public function editCustomer(Customer $customer)
@@ -45,5 +50,17 @@ class CustomerService implements CustomerServiceInterface
     public function deleteCustomer(Customer $customer)
     {
         return $this->customerRepository->delete($customer);
+    }
+
+    public function archiveCustomer(Customer $customer)
+    {
+        $customer->setIsActive(false);
+        return $this->customerRepository->edit($customer);
+    }
+
+    public function activateCustomer(Customer $customer)
+    {
+        $customer->setIsActive(true);
+        return $this->customerRepository->edit($customer);
     }
 }

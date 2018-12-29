@@ -88,7 +88,23 @@ class CustomerController extends Controller
         $customers = $this->customerService->getAllCustomers();
 
         return $this->render('customer/all.html.twig', [
-            'customers' => $customers
+            'customers' => $customers,
+            'areActive' => true
+        ]);
+    }
+
+    /**
+     * @Route("/archived", name="archived_customers")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function listAllArchivedAction()
+    {
+        $customers = $this->customerService->getAllArchivedCustomers();
+
+        return $this->render('customer/all.html.twig', [
+            'customers' => $customers,
+            'areActive' => false
         ]);
     }
 
@@ -168,6 +184,46 @@ class CustomerController extends Controller
 
         $this->addressService->deleteAddress($address);
         $this->customerService->deleteCustomer($customer);
+
+        return $this->redirectToRoute('all_customers');
+    }
+
+    /**
+     * @Route("/archive/{id}", name="archive_customer")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function archiveAction($id)
+    {
+        /** @var Customer $customer */
+        $customer = $this->customerService->getCustomerById($id);
+
+        if ($customer === null) {
+            $this->redirectToRoute('all_customers');
+        }
+
+        $this->customerService->archiveCustomer($customer);
+
+        return $this->redirectToRoute('all_customers');
+    }
+
+    /**
+     * @Route("/activate/{id}", name="activate_customer")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function activateAction($id)
+    {
+        /** @var Customer $customer */
+        $customer = $this->customerService->getCustomerById($id);
+
+        if ($customer === null) {
+            $this->redirectToRoute('all_customers');
+        }
+
+        $this->customerService->activateCustomer($customer);
 
         return $this->redirectToRoute('all_customers');
     }
