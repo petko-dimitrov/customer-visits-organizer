@@ -187,7 +187,7 @@ class Address
     }
 
     /**
-     * Set appartment
+     * Set apartment
      *
      * @param integer $apartment
      *
@@ -201,7 +201,7 @@ class Address
     }
 
     /**
-     * Get appartment
+     * Get apartment
      *
      * @return int
      */

@@ -3,6 +3,7 @@
 namespace CVOBundle\Controller;
 
 
+use CVOBundle\Entity\Customer;
 use CVOBundle\Entity\Visit;
 use CVOBundle\Form\VisitType;
 use CVOBundle\Service\Customer\CustomerServiceInterface;
@@ -162,10 +163,11 @@ class VisitController extends Controller
     {
         /** @var Visit[] $visits */
         $visits = $this->visitService->getAllForthcoming();
+        $viewName = 'All Planned ';
 
         return $this->render('visit/all_visits.html.twig', [
             'visits' => $visits,
-            'byUser' => false
+            'viewName' => $viewName
         ]);
     }
 
@@ -177,12 +179,13 @@ class VisitController extends Controller
     public function listForthcomingByUserAction()
     {
         $userId = $this->getUser()->getId();
+        $viewName = 'My Planned ';
 
         $visits = $this->visitService->getAllForthcomingByUser($userId);
 
         return $this->render('visit/all_visits.html.twig', [
             'visits' => $visits,
-            'byUser' => true
+            'viewName' => $viewName
         ]);
     }
 
@@ -194,10 +197,11 @@ class VisitController extends Controller
     public function listAllAction()
     {
         $visits = $this->visitService->getAllFinished();
+        $viewName = 'All Past ';
 
         return $this->render('visit/all_visits.html.twig', [
             'visits' => $visits,
-            'byUser' => false
+            'viewName' => $viewName
         ]);
     }
 
@@ -209,12 +213,33 @@ class VisitController extends Controller
      */
     public function listAllByCustomerAction($id)
     {
+        /** @var Customer $customer */
         $customer = $this->customerService->getCustomerById($id);
         $visits = $this->visitService->getAllByCustomer($customer);
+        $viewName = 'All ' . $customer->getName();
 
         return $this->render('visit/all_visits.html.twig', [
             'visits' => $visits,
-            'byUser' => false
+            'viewName' => $viewName
+        ]);
+    }
+
+    /**
+     * @Route("/planned-by-customer/{id}" ,name="planned_customer_visits")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param $id
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function listForthcomingByCustomerAction($id)
+    {
+        /** @var Customer $customer */
+        $customer = $this->customerService->getCustomerById($id);
+        $visits = $this->visitService->getForthcomingByCustomer($customer);
+        $viewName = 'All Planned ' . $customer->getName();
+
+        return $this->render('visit/all_visits.html.twig', [
+            'visits' => $visits,
+            'viewName' => $viewName
         ]);
     }
 

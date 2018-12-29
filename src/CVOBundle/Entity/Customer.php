@@ -56,17 +56,6 @@ class Customer
     private $isActive;
 
     /**
-     * @Assert\GreaterThanOrEqual("today",
-     *     message = "The next visit must be today or in the future."
-     * )
-     *
-     * @var \DateTime
-     *
-     * @ORM\Column(name="next_visit", type="date", nullable=true)
-     */
-    private $nextVisit;
-
-    /**
      *
      * @var string
      *

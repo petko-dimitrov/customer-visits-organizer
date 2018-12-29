@@ -19,6 +19,8 @@ interface VisitServiceInterface
 
     public function getAllByCustomer($customer);
 
+    public function getForthcomingByCustomer($customer);
+
     public function finishVisit($id);
 
     public function getVisitById($id);

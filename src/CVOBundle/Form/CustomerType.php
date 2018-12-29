@@ -21,10 +21,6 @@ class CustomerType extends AbstractType
         $builder
             ->add('name', TextType::class)
             ->add('monthlyTax', MoneyType::class)
-            ->add('nextVisit', DateType ::class, array(
-                'widget' => 'single_text',
-                'format' => 'yyyy-MM-dd',
-            ))
             ->add('moreInfo', TextType::class)
             ->add('phone', TextType::class)
             ->add('email', EmailType::class)

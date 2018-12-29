@@ -6,6 +6,7 @@ use CVOBundle\Entity\Customer;
 use CVOBundle\Form\CustomerType;
 use CVOBundle\Service\Address\AddressServiceInterface;
 use CVOBundle\Service\Customer\CustomerServiceInterface;
+use CVOBundle\Service\Visit\VisitServiceInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -86,8 +87,9 @@ class CustomerController extends Controller
     {
         $customers = $this->customerService->getAllCustomers();
 
-        return $this->render('customer/all.html.twig',
-            ['customers' => $customers]);
+        return $this->render('customer/all.html.twig', [
+            'customers' => $customers
+        ]);
     }
 
 

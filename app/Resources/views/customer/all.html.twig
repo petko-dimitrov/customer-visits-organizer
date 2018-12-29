@@ -11,7 +11,7 @@
             <th scope="col">Email</th>
             <th scope="col">Website</th>
             <th scope="col">Monthly Tax</th>
-            <th scope="col">Next Visit</th>
+            <th scope="col">Visits</th>
             <th scope="col">Actions</th>
         </tr>
         </thead>
@@ -23,9 +23,15 @@
             <td><a href="mailto:{{ customer.email }}">{{ customer.email }}</a></td>
             <td><a href="{{ customer.website }}" target="_blank">{{ customer.website }}</a></td>
             <td>${{ customer.monthlyTax }}</td>
-            <td>{{ customer.nextVisit|date("d-M-Y") }}
-                <a href="{{ path('all_customer_visits', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-primary">View All</button></a>
-                <a href="{{ path('add_visit', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-success">Add Visit</button></a>
+            <td>
+                <a href="{{ path('planned_customer_visits', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-info">Planned</button></a>
+                <a href="{{ path('all_customer_visits', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-primary">Past</button></a>
+                <a href="{{ path('add_visit', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-success">Add</button></a>
+                {% for visit in customer.visits|sortbyfield('date') %}
+                    {% if visit.isFinished == false %}
+                        <p>{{ visit.date|date("d-M-Y") }}</p>
+                    {% endif %}
+                {% endfor %}
             </td>
             <td>
                 <a href="{{ path('view_one', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-primary">More Info</button></a>

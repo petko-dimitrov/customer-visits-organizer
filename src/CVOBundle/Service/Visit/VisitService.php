@@ -63,9 +63,14 @@ class VisitService implements VisitServiceInterface
         return $this->visitRepository->findForthcomingByUser($userId);
     }
 
+    public function getForthcomingByCustomer($customer)
+    {
+        return $this->visitRepository->findBy(['customer' => $customer, 'isFinished' => false], ['date' => 'DESC']);
+    }
+
     public function getAllByCustomer($customer)
     {
-        return $this->visitRepository->findBy(['customer' => $customer], ['date' => 'DESC']);
+        return $this->visitRepository->findBy(['customer' => $customer, 'isFinished' => true], ['date' => 'DESC']);
     }
 
     public function getVisitById($id)
@@ -84,8 +89,6 @@ class VisitService implements VisitServiceInterface
 
         return $this->visitRepository->edit($visit);
     }
-
-
 
     public function deleteVisit(Visit $visit)
     {

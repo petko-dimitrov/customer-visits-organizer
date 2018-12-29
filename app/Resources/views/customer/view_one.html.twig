@@ -18,12 +18,17 @@
             </tr>
             <tr>
                 <th scope="row">
-                    Next Visit
-                    <a href="{{ path('all_customer_visits', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-primary">View All</button></a>
+                    Visits
                 </th>
                 <td>
-                    {{ customer.nextVisit|date("d-M-Y") }}
-                    <a href="{{ path('add_visit', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-success">Change</button></a>
+                    <a href="{{ path('planned_customer_visits', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-info">Planned</button></a>
+                    <a href="{{ path('all_customer_visits', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-primary">Past</button></a>
+                    <a href="{{ path('add_visit', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-success">Add</button></a>
+                    {% for visit in customer.visits|sortbyfield('date') %}
+                        {% if visit.isFinished == false %}
+                            <p>{{ visit.date|date("d-M-Y") }}</p>
+                        {% endif %}
+                    {% endfor %}
                 </td>
             </tr>
             <tr>
