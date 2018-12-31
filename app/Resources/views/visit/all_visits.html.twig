@@ -10,6 +10,7 @@
             <th scope="col">Time</th>
             <th scope="col">Is Regular</th>
             <th scope="col">Service Type</th>
+            <th scope="col">Payment</th>
             <th scope="col">More Info</th>
             <th scope="col">Users</th>
             <th scope="col">Actions</th>
@@ -29,38 +30,28 @@
                     {% endif %}
                 </td>
                 <td>{{ visit.serviceType }}</td>
+                <td>${{ visit.taxCollected }} {{ visit.paymentType }}</td>
                 <td>{{ visit.moreInfo }}</td>
                 <td>
                     {% for user in visit.users %}
                         {{ user.username }}{% if not loop.last %}, {% endif %}
                     {% endfor %}
                 </td>
-                {% if visit.finished %}
-                    <td>
-                        Done
-                        <a href="{{ path('add_visit', {id: visit.customer.id}) }}">
-                            <button type="button" class="btn btn-small btn-success">Add Visit</button>
-                        </a>
-                    </td>
-                {% else %}
                     <td>
                         {% if app.getUser() in visit.users or app.getUser().isAdmin() %}
-                            <a href="{{ path('finish_visit', {id: visit.id}) }}">
-                                <button type="button" class="btn btn-small btn-primary">Finish</button>
-                            </a><a href="{{ path('edit_visit', {id: visit.id}) }}">
-                                <button type="button" class="btn btn-small btn-success">Edit</button>
-                            </a><a href="{{ path('delete_visit', {id: visit.id}) }}">
-                                <button type="button" class="btn btn-small btn-danger">Delete</button>
-                            </a>
-                        {% else %}
-                            Pending
+                            {% if visit.finished %}
+                                <a href="{{ path('add_visit', {id: visit.customer.id}) }}"><button type="button" class="btn btn-small btn-success">Add Visit</button></a>
+                            {% else %}
+                                <a href="{{ path('finish_visit', {id: visit.id}) }}"><button type="button" class="btn btn-small btn-primary">Finish</button></a>
+                                <a href="{{ path('edit_visit', {id: visit.id}) }}"><button type="button" class="btn btn-small btn-success">Edit</button></a>
+                                <a href="{{ path('delete_visit', {id: visit.id}) }}"><button type="button" class="btn btn-small btn-danger">Delete</button></a>
+                            {% endif %}
                         {% endif %}
                     </td>
-                {% endif %}
             </tr>
         {% else %}
             <tr>
-                <td colspan="8">No visits.</td>
+                <td colspan="9">No visits.</td>
             </tr>
         {% endfor %}
         </tbody>

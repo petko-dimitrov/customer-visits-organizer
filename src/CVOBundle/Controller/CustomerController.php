@@ -220,11 +220,11 @@ class CustomerController extends Controller
         $customer = $this->customerService->getCustomerById($id);
 
         if ($customer === null) {
-            $this->redirectToRoute('all_customers');
+            $this->redirectToRoute('archived_customers');
         }
 
         $this->customerService->activateCustomer($customer);
 
-        return $this->redirectToRoute('all_customers');
+        return $this->redirectToRoute('archived_customers');
     }
 }

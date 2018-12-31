@@ -36,6 +36,18 @@ class Visit
     private $taxCollected;
 
     /**
+     * @Assert\Length(
+     *      max = 55,
+     *      maxMessage = "Payment type cannot be longer than {{ limit }} characters"
+     * )
+     *
+     * @var string
+     *
+     * @ORM\Column(name="payment_type", type="string", length=55)
+     */
+    private $paymentType;
+
+    /**
      * @Assert\GreaterThanOrEqual("today",
      *     message = "The visit must be today or in the future."
      * )
@@ -144,6 +156,22 @@ class Visit
     public function getTaxCollected()
     {
         return $this->taxCollected;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaymentType()
+    {
+        return $this->paymentType;
+    }
+
+    /**
+     * @param string $paymentType
+     */
+    public function setPaymentType(string $paymentType)
+    {
+        $this->paymentType = $paymentType;
     }
 
     /**

@@ -111,6 +111,7 @@ class VisitService implements VisitServiceInterface
         $nextVisit->setIsRegular(true);
         $nextVisit->setCustomer($customer);
         $nextVisit->setDate($visit->getDate());
+        $nextVisit->setPaymentType($visit->getPaymentType());
 
         foreach ($users as $user) {
             $nextVisit->addUser($user);

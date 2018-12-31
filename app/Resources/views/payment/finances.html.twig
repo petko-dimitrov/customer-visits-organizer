@@ -1,0 +1,80 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+    <h1>Finances</h1>
+    <form class="form-inline" action="{{ path('finances') }}" method="post">
+        <div class="form-group">
+        {{ form_row(form.year) }}
+        </div>
+        <div class="form-group">
+        {{ form_row(form.month) }}
+        </div>
+        <button type="submit" class="btn btn-primary">Calculate</button>
+        {{ form_row(form._token) }}
+    </form>
+    {#Income#}
+    <div class="col col-lg-6">
+        <table class="table table-hover table-striped table-bordered">
+            <thead>
+            <tr>
+                <th colspan="2" scope="row">Income</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">
+                    {{ month }} {{ year }}
+                </th>
+                <td>
+                    <p>Cash: ${{ financeHolder.monthlyCashIncome }}</p>
+                    <p>Bank: ${{ financeHolder.monthlyBankIncome }}</p>
+                    <p>Total: ${{ financeHolder.monthlyTotalIncome }}</p>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">
+                    {{ year }}
+                </th>
+                <td>
+                    <p>Cash:  ${{ financeHolder.annualCashIncome }}</p>
+                    <p>Bank: ${{ financeHolder.annualBankIncome }}</p>
+                    <p>Total: ${{ financeHolder.annualTotalIncome }}</p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    {#Expenses#}
+    <div class="col col-lg-6">
+        <table class="table table-hover table-striped table-bordered">
+            <thead>
+            <tr>
+                <th colspan="2" scope="row">Expenses</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">
+                    {{ month }} {{ year }}
+                </th>
+                <td>
+                    <p>Cash: ${{ financeHolder.monthlyCashExpenses }}</p>
+                    <p>Bank: ${{ financeHolder.monthlyBankExpenses }}</p>
+                    <p>Total: ${{ financeHolder.monthlyTotalExpenses }}</p>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">
+                    {{ year }}
+                </th>
+                <td>
+                    <p>Cash: ${{ financeHolder.annualCashExpenses }}</p>
+                    <p>Bank: ${{ financeHolder.annualBankExpenses }}</p>
+                    <p>Total: ${{ financeHolder.annualTotalExpenses }}</p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+{% endblock %}

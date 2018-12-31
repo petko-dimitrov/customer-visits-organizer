@@ -41,12 +41,9 @@ class VisitRepository extends \Doctrine\ORM\EntityRepository
         $query = $this->_em->createQuery(
             "SELECT v
                 FROM CVOBundle:Visit v
-                WHERE v.date >= :today
-                AND v.isFinished = false
+                WHERE v.isFinished = false
                 ORDER BY v.date"
         );
-
-        $query->setParameter('today', new \DateTime());
 
         return $query->getResult();
     }
@@ -67,5 +64,23 @@ class VisitRepository extends \Doctrine\ORM\EntityRepository
         $statement = $connection->prepare("DELETE FROM users_visits WHERE visit_id = :id");
         $statement->bindValue('id', $visitId);
         $statement->execute();
+    }
+
+    public function findIncome($startDate, $endDate, $paymentType)
+    {
+        $query = $this->_em->createQuery(
+            "SELECT SUM(v.taxCollected) AS result
+                FROM CVOBundle:Visit v
+                WHERE v.date >= :startDate
+                AND v.date <= :endDate
+                AND v.isFinished = true
+                AND v.paymentType = :paymentType"
+        );
+
+        $query->setParameter('startDate', $startDate);
+        $query->setParameter('endDate', $endDate);
+        $query->setParameter('paymentType', $paymentType);
+
+        return $query->getResult();
     }
 }

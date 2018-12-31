@@ -63,7 +63,6 @@ class VisitController extends Controller
         }
 
         if ($visitForm->isSubmitted() && $visitForm->isValid()) {
-
             $users = $visit->getUsers();
 
             foreach ($users as $user) {

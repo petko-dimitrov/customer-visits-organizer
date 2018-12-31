@@ -23,6 +23,13 @@ class VisitType extends AbstractType
     {
         $builder
             ->add('taxCollected', MoneyType::class)
+            ->add('paymentType', ChoiceType::class, array(
+                'choices'  => array(
+                    'Cash' => 'cash',
+                    'Bank' => 'bank'
+                ),
+                'label' => false
+            ))
             ->add('date', DateType ::class, array(
                 'widget' => 'single_text',
                 'format' => 'yyyy-MM-dd',

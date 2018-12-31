@@ -23,7 +23,9 @@
                 <td>
                     <a href="{{ path('planned_customer_visits', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-info">Planned</button></a>
                     <a href="{{ path('all_customer_visits', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-primary">Past</button></a>
-                    <a href="{{ path('add_visit', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-success">Add</button></a>
+                    {% if customer.isActive %}
+                        <a href="{{ path('add_visit', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-success">Add</button></a>
+                    {% endif %}
                     {% for visit in customer.visits|sortbyfield('date') %}
                         {% if visit.isFinished == false %}
                             <p>{{ visit.date|date("d-M-Y") }}</p>
@@ -38,9 +40,15 @@
             <tr>
                 <th scope="row">Is Active</th>
                 {% if customer.isActive %}
-                    <td>Yes</td>
+                    <td>
+                        Yes
+                        <a href="{{ path('archive_customer', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-warning">Archive</button></a>
+                    </td>
                 {% else %}
-                    <td>No</td>
+                    <td>
+                        No
+                        <a href="{{ path('activate_customer', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-warning">Activate</button></a>
+                    </td>
                 {% endif %}
             </tr>
             <tr>
@@ -143,7 +151,7 @@
                     <td>{{ contact.name }}</td>
                 </tr>
                 <tr>
-                    <th scope="row">Job title</th>
+                    <th scope="row">Job Title</th>
                     <td>{{ contact.jobTitle }}</td>
                 </tr>
                 <tr>
