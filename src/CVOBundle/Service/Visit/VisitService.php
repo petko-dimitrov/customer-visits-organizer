@@ -33,44 +33,35 @@ class VisitService implements VisitServiceInterface
         $this->visitRepository->save($visit);
     }
 
-    public function getAllForthcoming()
-    {
-        return $this->visitRepository->findForthcoming();
-    }
-
-    public function finishVisit($id)
-    {
-        /** @var Visit $visit */
-        $visit = $this->visitRepository->find($id);
-        $visit->setIsFinished(true);
-
-        $this->visitRepository->save($visit);
-    }
-
     public function getAll()
     {
         return $this->visitRepository->findBy([], ['date' => 'ASC']);
     }
 
-    public function getAllFinished()
+    public function getAllVisits($year, $month, $isFinished)
     {
-        return $this->visitRepository->findBy(['isFinished' => true], ['date' => 'DESC']);
+        $days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+        $startDate = new \DateTime("$year-$month-01");
+        $endDate = new \DateTime("$year-$month-$days");
 
+        return $this->visitRepository->findVisits($startDate, $endDate, $isFinished);
     }
 
-    public function getAllForthcomingByUser($userId)
+    public function getAllByCustomer($customer, $year, $isFinished)
     {
-        return $this->visitRepository->findForthcomingByUser($userId);
+        $startDate = new \DateTime("$year-01-01");
+        $endDate = new \DateTime("$year-12-31");
+
+        return $this->visitRepository->findVisitsByCustomer($customer, $startDate, $endDate, $isFinished);
     }
 
-    public function getForthcomingByCustomer($customer)
+    public function getAllByUser($userId, $year, $month, $isFinished)
     {
-        return $this->visitRepository->findBy(['customer' => $customer, 'isFinished' => false], ['date' => 'DESC']);
-    }
+        $days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
+        $startDate = new \DateTime("$year-$month-01");
+        $endDate = new \DateTime("$year-$month-$days");
 
-    public function getAllByCustomer($customer)
-    {
-        return $this->visitRepository->findBy(['customer' => $customer, 'isFinished' => true], ['date' => 'DESC']);
+        return $this->visitRepository->findVisitsByUser($userId, $startDate, $endDate, $isFinished);
     }
 
     public function getVisitById($id)
@@ -93,6 +84,15 @@ class VisitService implements VisitServiceInterface
     public function deleteVisit(Visit $visit)
     {
         return $this->visitRepository->delete($visit);
+    }
+
+    public function finishVisit($id)
+    {
+        /** @var Visit $visit */
+        $visit = $this->visitRepository->find($id);
+        $visit->setIsFinished(true);
+
+        $this->visitRepository->save($visit);
     }
 
     public function scheduleVisit(Visit $visit)

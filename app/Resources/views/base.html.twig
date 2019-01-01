@@ -21,8 +21,8 @@
                         <li><a href="{{ path('homepage') }}">Home</a></li>
                         {% if app.user %}
                             <li><a href="{{ path('all_customers') }}">Customers</a></li>
-                            <li><a href="{{ path('forthcoming_visits') }}">Planned Visits</a></li>
-                            <li><a href="{{ path('finished_visits') }}">Past Visits</a></li>
+                            <li><a href="{{ path('forthcoming_visits') }}">Visits</a></li>
+                            <li><a href="{{ path('list_expenses') }}">Expenses</a></li>
                             <li><a href="{{ path('finances') }}">Finances</a></li>
                         {% endif %}
                     </ul>

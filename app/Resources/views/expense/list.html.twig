@@ -1,0 +1,48 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+<h1>Expenses Made in {{ month }} {{ year }}</h1>
+<form class="form-inline" action="{{ path('list_expenses') }}" method="post">
+    <div class="form-group">
+        {{ form_row(form.year) }}
+    </div>
+    <div class="form-group">
+        {{ form_row(form.month) }}
+    </div>
+    <button type="submit" class="btn btn-info">List</button>
+    {{ form_row(form._token) }}
+</form>
+<button type="button" class="btn btn-light"><a href="{{ path('add_expense') }}">Add Expense</a></button>
+<table class="table table-hover table-striped table-bordered">
+    <thead class="thead-dark">
+    <tr>
+        <th scope="col">Expense</th>
+        <th scope="col">Date</th>
+        <th scope="col">Single Price</th>
+        <th scope="col">Quantity</th>
+        <th scope="col">Total Price</th>
+        <th scope="col">Actions</th>
+    </tr>
+    </thead>
+    <tbody>
+        {% for expense in expenses %}
+            <tr>
+                <td>{{ expense.name }}</td>
+                <td>{{ expense.date|date("d-M-Y") }}</td>
+                <td>{{ expense.singlePrice }}</td>
+                <td>{{ expense.quantity }}</td>
+                <td>{{ expense.totalPrice }}</td>
+                <td>
+                    <a href="{{ path('edit_expense', {id: expense.id}) }}"><button type="button" class="btn btn-small btn-success">Edit</button></a>
+                    <a href="{{ path('delete_expense', {id: expense.id}) }}"><button type="button" class="btn btn-small btn-danger">Delete</button></a>
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="6">No expenses.</td>
+            </tr>
+        {% endfor %}
+    </tbody>
+</table>
+{% endblock %}
+

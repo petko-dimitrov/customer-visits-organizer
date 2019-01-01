@@ -17,4 +17,55 @@ class ExpenseRepository extends \Doctrine\ORM\EntityRepository
     {
         parent::__construct($em, new Mapping\ClassMetadata(Expense::class));
     }
+
+    public function save(Expense $expense)
+    {
+        $this->_em->persist($expense);
+        $this->_em->flush();
+    }
+
+    public function edit(Expense $expense)
+    {
+        $this->_em->merge($expense);
+        $this->_em->flush();
+    }
+
+    public function delete(Expense $expense)
+    {
+        $this->_em->remove($expense);
+        $this->_em->flush();
+    }
+
+    public function findExpensesList($startDate, $endDate)
+    {
+        $query = $this->_em->createQuery(
+            "SELECT e
+                FROM CVOBundle:Expense e
+                WHERE e.date >= :startDate
+                AND e.date <= :endDate
+                ORDER BY e.date DESC"
+        );
+
+        $query->setParameter('startDate', $startDate);
+        $query->setParameter('endDate', $endDate);
+
+        return $query->getResult();
+    }
+
+    public function findExpensesSum($startDate, $endDate, $paymentType)
+    {
+        $query = $this->_em->createQuery(
+            "SELECT SUM(e.totalPrice) AS result
+                FROM CVOBundle:Expense e
+                WHERE e.date >= :startDate
+                AND e.date <= :endDate
+                AND e.paymentType = :paymentType"
+        );
+
+        $query->setParameter('startDate', $startDate);
+        $query->setParameter('endDate', $endDate);
+        $query->setParameter('paymentType', $paymentType);
+
+        return $query->getResult();
+    }
 }

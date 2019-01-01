@@ -2,7 +2,7 @@
 
 namespace CVOBundle\Controller;
 
-use CVOBundle\Form\FinanceType;
+use CVOBundle\Form\DateType;
 use CVOBundle\Service\Payment\FinanceServiceInterface;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
@@ -26,22 +26,21 @@ class FinanceController extends Controller
      */
     public function financeAction(Request $request)
     {
-        $form = $this->createForm(FinanceType::class);
+        $form = $this->createForm(DateType::class);
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $form->isValid()) {
             $data = $form->getData();
             $year = $data['year'];
             $month = $data['month'];
-
-            $financeHolder = $this->financeService->getFinanceInfo($year, $month);
         } else {
             $date = new \DateTime();
             $year = $date->format('Y');
             $month = $date->format('m');
 
-            $financeHolder = $this->financeService->getFinanceInfo($year, $month);
         }
+
+        $financeHolder = $this->financeService->getFinanceInfo($year, $month);
 
         return $this->render('payment/finances.html.twig', [
             'form' => $form->createView(),

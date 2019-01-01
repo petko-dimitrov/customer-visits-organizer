@@ -5,7 +5,9 @@ namespace CVOBundle\Controller;
 
 use CVOBundle\Entity\Customer;
 use CVOBundle\Entity\Visit;
+use CVOBundle\Form\DateType;
 use CVOBundle\Form\VisitType;
+use CVOBundle\Form\YearType;
 use CVOBundle\Service\Customer\CustomerServiceInterface;
 use CVOBundle\Service\User\UserServiceInterface;
 use CVOBundle\Service\Visit\VisitServiceInterface;
@@ -156,51 +158,67 @@ class VisitController extends Controller
     /**
      * @Route("/forthcoming" ,name="forthcoming_visits")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listForthcomingAction()
+    public function listForthcomingAction(Request $request)
     {
+        $form = $this->createForm(DateType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $year = $data['year'];
+            $month = $data['month'];
+        } else {
+            $date = new \DateTime();
+            $year = $date->format('Y');
+            $month = $date->format('m');
+        }
+
         /** @var Visit[] $visits */
-        $visits = $this->visitService->getAllForthcoming();
+        $visits = $this->visitService->getAllVisits($year, $month, false);
         $viewName = 'All Planned ';
 
         return $this->render('visit/all_visits.html.twig', [
             'visits' => $visits,
-            'viewName' => $viewName
-        ]);
-    }
-
-    /**
-     * @Route("/my-visits", name="my_visits")
-     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
-     * @return \Symfony\Component\HttpFoundation\Response
-     */
-    public function listForthcomingByUserAction()
-    {
-        $userId = $this->getUser()->getId();
-        $viewName = 'My Planned ';
-
-        $visits = $this->visitService->getAllForthcomingByUser($userId);
-
-        return $this->render('visit/all_visits.html.twig', [
-            'visits' => $visits,
-            'viewName' => $viewName
+            'viewName' => $viewName,
+            'form' => $form->createView(),
+            'year' => $year,
+            'month' => date("F", strtotime($year . "-" . $month . "-01"))
         ]);
     }
 
     /**
      * @Route("/finished", name="finished_visits")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listAllAction()
+    public function listAllAction(Request $request)
     {
-        $visits = $this->visitService->getAllFinished();
+        $form = $this->createForm(DateType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $year = $data['year'];
+            $month = $data['month'];
+        } else {
+            $date = new \DateTime();
+            $year = $date->format('Y');
+            $month = $date->format('m');
+        }
+
+        $visits = $this->visitService->getAllVisits($year, $month, true);
         $viewName = 'All Past ';
 
         return $this->render('visit/all_visits.html.twig', [
             'visits' => $visits,
-            'viewName' => $viewName
+            'viewName' => $viewName,
+            'form' => $form->createView(),
+            'year' => $year,
+            'month' => date("F", strtotime($year . "-" . $month . "-01"))
         ]);
     }
 
@@ -208,18 +226,34 @@ class VisitController extends Controller
      * @Route("/by-customer/{id}" ,name="all_customer_visits")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @param $id
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listAllByCustomerAction($id)
+    public function listAllByCustomerAction($id, Request $request)
     {
         /** @var Customer $customer */
         $customer = $this->customerService->getCustomerById($id);
-        $visits = $this->visitService->getAllByCustomer($customer);
-        $viewName = 'All ' . $customer->getName();
 
-        return $this->render('visit/all_visits.html.twig', [
+        $form = $this->createForm(YearType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $year = $data['year'];
+        } else {
+            $date = new \DateTime();
+            $year = $date->format('Y');
+        }
+
+        $visits = $this->visitService->getAllByCustomer($customer, $year, true);
+        $viewName = 'Past ' . $customer->getName();
+
+        return $this->render('visit/all_visits_by_id.html.twig', [
             'visits' => $visits,
-            'viewName' => $viewName
+            'viewName' => $viewName,
+            'form' => $form->createView(),
+            'year' => $year,
+            'customer' => $customer
         ]);
     }
 
@@ -227,18 +261,104 @@ class VisitController extends Controller
      * @Route("/planned-by-customer/{id}" ,name="planned_customer_visits")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @param $id
+     * @param Request $request
      * @return \Symfony\Component\HttpFoundation\Response
      */
-    public function listForthcomingByCustomerAction($id)
+    public function listForthcomingByCustomerAction($id, Request $request)
     {
         /** @var Customer $customer */
         $customer = $this->customerService->getCustomerById($id);
-        $visits = $this->visitService->getForthcomingByCustomer($customer);
-        $viewName = 'All Planned ' . $customer->getName();
+
+        $form = $this->createForm(YearType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $year = $data['year'];
+        } else {
+            $date = new \DateTime();
+            $year = $date->format('Y');
+        }
+
+        $visits = $this->visitService->getAllByCustomer($customer, $year, false);
+        $viewName = 'Planned ' . $customer->getName();
+
+        return $this->render('visit/all_visits_by_id.html.twig', [
+            'visits' => $visits,
+            'viewName' => $viewName,
+            'form' => $form->createView(),
+            'year' => $year,
+            'customer' => $customer
+        ]);
+    }
+
+    /**
+     * @Route("/my-visits", name="my_visits")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function listForthcomingByUserAction(Request $request)
+    {
+        $userId = $this->getUser()->getId();
+        $viewName = 'My Planned ';
+
+        $form = $this->createForm(DateType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $year = $data['year'];
+            $month = $data['month'];
+        } else {
+            $date = new \DateTime();
+            $year = $date->format('Y');
+            $month = $date->format('m');
+        }
+
+        $visits = $this->visitService->getAllByUser($userId, $year, $month, false);
 
         return $this->render('visit/all_visits.html.twig', [
             'visits' => $visits,
-            'viewName' => $viewName
+            'viewName' => $viewName,
+            'form' => $form->createView(),
+            'year' => $year,
+            'month' => date("F", strtotime($year . "-" . $month . "-01"))
+        ]);
+    }
+
+    /**
+     * @Route("/my-past-visits", name="my_past_visits")
+     * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
+     * @param Request $request
+     * @return \Symfony\Component\HttpFoundation\Response
+     */
+    public function listPastByUserAction(Request $request)
+    {
+        $userId = $this->getUser()->getId();
+        $viewName = 'My Past ';
+
+        $form = $this->createForm(DateType::class);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $data = $form->getData();
+            $year = $data['year'];
+            $month = $data['month'];
+        } else {
+            $date = new \DateTime();
+            $year = $date->format('Y');
+            $month = $date->format('m');
+        }
+
+        $visits = $this->visitService->getAllByUser($userId, $year, $month, true);
+
+        return $this->render('visit/all_visits.html.twig', [
+            'visits' => $visits,
+            'viewName' => $viewName,
+            'form' => $form->createView(),
+            'year' => $year,
+            'month' => date("F", strtotime($year . "-" . $month . "-01"))
         ]);
     }
 

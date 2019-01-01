@@ -1,0 +1,78 @@
+{% extends 'base.html.twig' %}
+
+{% block main %}
+<h1>{{ viewName }} Visits in {{ year }}</h1>
+{% if 'Past' in viewName %}
+    <form class="form-inline" action="{{ path('all_customer_visits', {id: customer.id}) }}" method="post">
+{% else %}
+    <form class="form-inline" action="{{ path('planned_customer_visits', {id: customer.id}) }}" method="post">
+{% endif %}
+    <div class="form-group">
+        {{ form_row(form.year) }}
+    </div>
+    <button type="submit" class="btn btn-info">List</button>
+    {{ form_row(form._token) }}
+</form>
+    {% if 'Past' in viewName %}
+        <button type="button" class="btn btn-light"><a href="{{ path('planned_customer_visits', {id: customer.id}) }}">View Planned Visits</a></button>
+    {% else %}
+        <button type="button" class="btn btn-light"><a href="{{ path('all_customer_visits', {id: customer.id}) }}">View Past Visits</a></button>
+    {% endif %}
+    <table class="table table-hover table-striped table-bordered">
+        <thead class="thead-dark">
+        <tr>
+            <th scope="col">Customer</th>
+            <th scope="col">Date</th>
+            <th scope="col">Time</th>
+            <th scope="col">Is Regular</th>
+            <th scope="col">Service Type</th>
+            <th scope="col">Payment</th>
+            <th scope="col">More Info</th>
+            <th scope="col">Employees</th>
+            <th scope="col">Actions</th>
+        </tr>
+        </thead>
+        <tbody>
+        {% for visit in visits %}
+            <tr>
+                <td>
+                    <a href="{{ path('view_one', {id: visit.customer.id}) }}">{{ visit.customer.name }}</a>
+                </td>
+                <td>{{ visit.date|date("d-M-Y") }}</td>
+                <td>{{ visit.time }}</td>
+                <td>
+                    {% if visit.isRegular %}
+                        Regular
+                    {% else %}
+                        Not Regular
+                    {% endif %}
+                </td>
+                <td>{{ visit.serviceType }}</td>
+                <td>${{ visit.taxCollected }} {{ visit.paymentType }}</td>
+                <td>{{ visit.moreInfo }}</td>
+                <td>
+                    {% for user in visit.users %}
+                        {{ user.username }}{% if not loop.last %}, {% endif %}
+                    {% endfor %}
+                </td>
+                <td>
+                    {% if app.getUser() in visit.users or app.getUser().isAdmin() %}
+                        {% if visit.finished %}
+                            <a href="{{ path('add_visit', {id: visit.customer.id}) }}"><button type="button" class="btn btn-small btn-success">Add Visit</button></a>
+                        {% else %}
+                            <a href="{{ path('finish_visit', {id: visit.id}) }}"><button type="button" class="btn btn-small btn-primary">Finish</button></a>
+                            <a href="{{ path('edit_visit', {id: visit.id}) }}"><button type="button" class="btn btn-small btn-success">Edit</button></a>
+                            <a href="{{ path('delete_visit', {id: visit.id}) }}"><button type="button" class="btn btn-small btn-danger">Delete</button></a>
+                        {% endif %}
+                    {% endif %}
+                </td>
+            </tr>
+        {% else %}
+            <tr>
+                <td colspan="9">No visits.</td>
+            </tr>
+        {% endfor %}
+        </tbody>
+    </table>
+    {% endblock %}
+

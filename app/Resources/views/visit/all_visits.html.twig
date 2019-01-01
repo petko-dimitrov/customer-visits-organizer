@@ -1,7 +1,42 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
-    <h1>{{ viewName }} Visits</h1>
+<h1>{{ viewName }} Visits in {{ month }} {{ year }}</h1>
+{% if 'My' in viewName %}
+    {% if 'Past' in viewName %}
+        <form class="form-inline" action="{{ path('my_past_visits') }}" method="post">
+    {% else %}
+        <form class="form-inline" action="{{ path('my_visits') }}" method="post">
+    {% endif %}
+{% else %}
+    {% if 'Past' in viewName %}
+        <form class="form-inline" action="{{ path('finished_visits') }}" method="post">
+    {% else %}
+        <form class="form-inline" action="{{ path('forthcoming_visits') }}" method="post">
+    {% endif %}
+{% endif %}
+            <div class="form-group">
+                {{ form_row(form.year) }}
+            </div>
+            <div class="form-group">
+                {{ form_row(form.month) }}
+            </div>
+            <button type="submit" class="btn btn-info">List</button>
+            {{ form_row(form._token) }}
+        </form>
+{% if 'My' in viewName %}
+    {% if 'Past' in viewName %}
+        <button type="button" class="btn btn-light"><a href="{{ path('my_visits') }}">View My Planned Visits</a></button>
+    {% else %}
+        <button type="button" class="btn btn-light"><a href="{{ path('my_past_visits') }}">View My Past Visits</a></button>
+    {% endif %}
+{% else %}
+    {% if 'Past' in viewName %}
+        <button type="button" class="btn btn-light"><a href="{{ path('forthcoming_visits') }}">View Planned Visits</a></button>
+    {% else %}
+        <button type="button" class="btn btn-light"><a href="{{ path('finished_visits') }}">View Past Visits</a></button>
+    {% endif %}
+{% endif %}
     <table class="table table-hover table-striped table-bordered">
         <thead class="thead-dark">
         <tr>
@@ -12,14 +47,16 @@
             <th scope="col">Service Type</th>
             <th scope="col">Payment</th>
             <th scope="col">More Info</th>
-            <th scope="col">Users</th>
+            <th scope="col">Employees</th>
             <th scope="col">Actions</th>
         </tr>
         </thead>
         <tbody>
         {% for visit in visits %}
             <tr>
-                <td>{{ visit.customer.name }}</td>
+                <td>
+                    <a href="{{ path('view_one', {id: visit.customer.id}) }}">{{ visit.customer.name }}</a>
+                </td>
                 <td>{{ visit.date|date("d-M-Y") }}</td>
                 <td>{{ visit.time }}</td>
                 <td>

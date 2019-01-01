@@ -3,6 +3,8 @@
 namespace CVOBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+
 
 /**
  * Expense
@@ -22,6 +24,11 @@ class Expense
     private $id;
 
     /**
+     * @Assert\Length(
+     *      max = 255,
+     *      maxMessage = "Expense name cannot be longer than {{ limit }} characters"
+     * )
+     *
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=255)
@@ -29,6 +36,11 @@ class Expense
     private $name;
 
     /**
+     *
+     * @Assert\GreaterThan(0,
+     *     message = "Quantity must be a positive number."
+     * )
+     *
      * @var int
      *
      * @ORM\Column(name="quantity", type="integer")
@@ -36,6 +48,11 @@ class Expense
     private $quantity;
 
     /**
+     *
+     * @Assert\GreaterThan(0,
+     *     message = "Price must be a positive number."
+     * )
+     *
      * @var string
      *
      * @ORM\Column(name="single_price", type="decimal", precision=10, scale=2)
@@ -43,11 +60,34 @@ class Expense
     private $singlePrice;
 
     /**
+     * @Assert\GreaterThan(0,
+     *     message = "Price must be a positive number."
+     * )
+     *
      * @var string
      *
      * @ORM\Column(name="total_price", type="decimal", precision=10, scale=2, nullable=true)
      */
     private $totalPrice;
+
+    /**
+     * @Assert\Length(
+     *      max = 55,
+     *      maxMessage = "Payment type cannot be longer than {{ limit }} characters"
+     * )
+     *
+     * @var string
+     *
+     * @ORM\Column(name="payment_type", type="string", length=55)
+     */
+    private $paymentType;
+
+    /**
+     * @var \DateTime
+     *
+     * @ORM\Column(name="date", type="date")
+     */
+    private $date;
 
 
     /**
@@ -154,6 +194,44 @@ class Expense
     public function getTotalPrice()
     {
         return $this->totalPrice;
+    }
+
+    /**
+     * @return \DateTime
+     */
+    public function getDate()
+    {
+        return $this->date;
+    }
+
+    /**
+     * @param \DateTime $date
+     * @return Expense
+     */
+    public function setDate(\DateTime $date)
+    {
+        $this->date = $date;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getPaymentType()
+    {
+        return $this->paymentType;
+    }
+
+    /**
+     * @param string $paymentType
+     * @return Expense
+     */
+    public function setPaymentType(string $paymentType)
+    {
+        $this->paymentType = $paymentType;
+
+        return $this;
     }
 }
 

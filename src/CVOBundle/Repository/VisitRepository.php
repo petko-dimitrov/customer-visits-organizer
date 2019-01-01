@@ -36,23 +36,55 @@ class VisitRepository extends \Doctrine\ORM\EntityRepository
         $this->_em->flush();
     }
 
-    public function findForthcoming()
+    public function findVisits($startDate, $endDate, $isFinished)
     {
         $query = $this->_em->createQuery(
             "SELECT v
                 FROM CVOBundle:Visit v
-                WHERE v.isFinished = false
+                WHERE v.date >= :startDate
+                AND v.date <= :endDate
+                AND v.isFinished = :isFinished
                 ORDER BY v.date"
         );
+
+        $query->setParameter('startDate', $startDate);
+        $query->setParameter('endDate', $endDate);
+        $query->setParameter('isFinished', $isFinished);
 
         return $query->getResult();
     }
 
-    public function findForthcomingByUser($userId)
+    public function findVisitsByCustomer($customer, $startDate, $endDate, $isFinished)
+    {
+        $query = $this->_em->createQuery(
+            "SELECT v
+                FROM CVOBundle:Visit v
+                WHERE v.customer = :customer
+                AND v.date >= :startDate
+                AND v.date <= :endDate
+                AND v.isFinished = :isFinished
+                ORDER BY v.date"
+        );
+
+        $query->setParameter('customer', $customer);
+        $query->setParameter('startDate', $startDate);
+        $query->setParameter('endDate', $endDate);
+        $query->setParameter('isFinished', $isFinished);
+
+        return $query->getResult();
+    }
+
+    public function findVisitsByUser($userId, $startDate, $endDate, $isFinished)
     {
         return $this->createQueryBuilder('v')
-            ->where(':user_id MEMBER OF v.users AND v.isFinished = false')
+            ->where(':user_id MEMBER OF v.users 
+            AND v.date >= :startDate
+            AND v.date <= :endDate
+            AND v.isFinished = :isFinished')
             ->setParameter('user_id', $userId)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('isFinished', $isFinished)
             ->orderBy('v.date')
             ->getQuery()
             ->getResult();

@@ -4,9 +4,9 @@
     <h1>All {% if areActive %}Active {% else %}Archived {% endif %}Customers</h1>
     <button type="button" class="btn btn-light"><a href="{{ path('create_customer') }}">Create Customer</a></button>
     {% if areActive %}
-        <button type="button" class="btn btn-light"><a href="{{ path('archived_customers') }}">View Archived</a></button>
+        <button type="button" class="btn btn-light"><a href="{{ path('archived_customers') }}">View Archived Customers</a></button>
     {% else %}
-        <button type="button" class="btn btn-light"><a href="{{ path('all_customers') }}">View Active</a></button>
+        <button type="button" class="btn btn-light"><a href="{{ path('all_customers') }}">View Active Customers</a></button>
     {% endif %}
     <table class="table table-hover table-striped table-bordered">
         <thead class="thead-dark">

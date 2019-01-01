@@ -9,21 +9,17 @@ interface VisitServiceInterface
 {
     public function addVisit(Visit $visit, $customerId);
 
-    public function getAllForthcoming();
-
-    public function getAllForthcomingByUser($userId);
-
-    public function getAllFinished();
-
     public function getAll();
 
-    public function getAllByCustomer($customer);
+    public function getVisitById($id);
 
-    public function getForthcomingByCustomer($customer);
+    public function getAllVisits($year, $month, $isFinished);
+
+    public function getAllByUser($userId, $year, $month, $isFinished);
+
+    public function getAllByCustomer($customer, $year, $isFinished);
 
     public function finishVisit($id);
-
-    public function getVisitById($id);
 
     public function editVisit(Visit $visit);
 
