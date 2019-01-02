@@ -57,7 +57,7 @@ class CustomerController extends Controller
             $customerToCheck = $this->customerService->checkCustomer($name);
 
             if (null != $customerToCheck) {
-                $this->addFlash('message', "Customer with name $name is already registered!");
+                $this->addFlash('notice', "Customer with name $name is already registered!");
                 return $this->render("customer/create.html.twig", [
                         'customer_form' => $customerForm->createView(),
                         'customer' => $customer,
@@ -68,6 +68,7 @@ class CustomerController extends Controller
             $this->customerService->addCustomer($customer);
             $id = $customer->getId();
 
+            $this->addFlash('message', $customer->getName() . " added successfully!");
             return $this->redirectToRoute('add_address', ['id' => $id]);
         }
 
@@ -155,6 +156,7 @@ class CustomerController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $this->customerService->editCustomer($customer);
 
+            $this->addFlash('message', $customer->getName() . " edited successfully!");
             return $this->redirectToRoute("view_one", ['id' => $id]);
         }
 
@@ -185,6 +187,7 @@ class CustomerController extends Controller
         $this->addressService->deleteAddress($address);
         $this->customerService->deleteCustomer($customer);
 
+        $this->addFlash('message', $customer->getName() . " deleted successfully!");
         return $this->redirectToRoute('all_customers');
     }
 
@@ -205,6 +208,7 @@ class CustomerController extends Controller
 
         $this->customerService->archiveCustomer($customer);
 
+        $this->addFlash('message', $customer->getName() . " archived successfully!");
         return $this->redirectToRoute('all_customers');
     }
 
@@ -224,6 +228,8 @@ class CustomerController extends Controller
         }
 
         $this->customerService->activateCustomer($customer);
+
+        $this->addFlash('message', $customer->getName() . " activated successfully!");
 
         return $this->redirectToRoute('archived_customers');
     }

@@ -59,6 +59,7 @@ class ContactController extends Controller
 
             $this->contactService->addContact($contact, $id);
 
+            $this->addFlash('message', "Contact for " . $customer->getName() . " added successfully!");
             return $this->redirectToRoute('view_one', [
                 'id' => $id
             ]);
@@ -89,7 +90,8 @@ class ContactController extends Controller
             $this->redirectToRoute('all_customers');
         }
 
-        $customerId = $contact->getCustomer()->getId();
+        $customer = $contact->getCustomer();
+        $customerId = $customer->getId();
 
         $form = $this->createForm(ContactType::class, $contact);
         $form->handleRequest($request);
@@ -110,6 +112,7 @@ class ContactController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $this->contactService->editContact($contact);
 
+            $this->addFlash('message', "Contact for " . $customer->getName() . " edited successfully!");
             return $this->redirectToRoute("view_one", ['id' => $customerId]);
         }
 
@@ -137,10 +140,12 @@ class ContactController extends Controller
             $this->redirectToRoute('all_customers');
         }
 
-        $customerId = $contact->getCustomer()->getId();
+        $customer = $contact->getCustomer();
+        $customerId = $customer->getId();
 
         $this->contactService->deleteContact($contact);
 
+        $this->addFlash('message', "Contact for " . $customer->getName() . " deleted successfully!");
         return $this->redirectToRoute('view_one', ['id' => $customerId]);
     }
 }

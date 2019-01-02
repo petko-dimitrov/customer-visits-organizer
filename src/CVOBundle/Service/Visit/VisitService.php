@@ -92,7 +92,7 @@ class VisitService implements VisitServiceInterface
         $visit = $this->visitRepository->find($id);
         $visit->setIsFinished(true);
 
-        $this->visitRepository->save($visit);
+        $this->visitRepository->edit($visit);
     }
 
     public function scheduleVisit(Visit $visit)

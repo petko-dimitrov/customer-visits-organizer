@@ -51,6 +51,7 @@ class ExpenseController extends Controller
 
         if ($form->isSubmitted() && $form->isValid()) {
             $this->expenseService->addExpense($expense);
+            $this->addFlash('message', "Expense added successfully!");
 
             return $this->redirectToRoute('list_expenses');
         }
@@ -94,6 +95,7 @@ class ExpenseController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $this->expenseService->editExpense($expense);
 
+            $this->addFlash('message', $expense->getName() . " edited successfully!");
             return $this->redirectToRoute('list_expenses');
         }
 
@@ -120,6 +122,7 @@ class ExpenseController extends Controller
 
         $this->expenseService->deleteExpense($expense);
 
+        $this->addFlash('message', $expense->getName() . " deleted successfully!");
         return $this->redirectToRoute('list_expenses');
     }
 

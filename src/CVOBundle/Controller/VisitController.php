@@ -73,6 +73,7 @@ class VisitController extends Controller
 
             $this->visitService->addVisit($visit, $id);
 
+            $this->addFlash('message', "Visit to " . $customer->getName() . " added successfully!");
             return $this->redirectToRoute('all_customers');
         }
 
@@ -123,6 +124,7 @@ class VisitController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $this->visitService->editVisit($visit);
 
+            $this->addFlash('message', "Visit to " . $customer->getName() . " edited successfully!");
             return $this->redirectToRoute("forthcoming_visits");
         }
 
@@ -145,6 +147,7 @@ class VisitController extends Controller
     public function deleteAction($id)
     {
         $visit = $this->visitService->getVisitById($id);
+        $customer = $visit->getCustomer();
 
         if ($visit === null) {
             $this->redirectToRoute('forthcoming_visits');
@@ -152,6 +155,7 @@ class VisitController extends Controller
 
         $this->visitService->deleteVisit($visit);
 
+        $this->addFlash('message', "Visit to " . $customer->getName() . " deleted successfully!");
         return $this->redirectToRoute('forthcoming_visits');
     }
 
@@ -378,6 +382,8 @@ class VisitController extends Controller
         }
 
         $this->visitService->finishVisit($id);
+        $this->addFlash('message', "Visit successfully finished!");
+
 
         return $this->redirectToRoute('forthcoming_visits');
     }

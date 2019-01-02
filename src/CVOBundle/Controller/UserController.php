@@ -45,8 +45,11 @@ class UserController extends Controller
             $userToCheck = $this->userService->checkUser($username);
 
             if (null != $userToCheck) {
-                $this->addFlash('message', "User with username $username is already registered!");
-                return $this->render("user/register.html.twig", ['form' => $form->createView()]);
+                $this->addFlash('notice', "User with username $username is already registered!");
+                return $this->render("user/register.html.twig", [
+                    'form' => $form->createView(),
+                    'errors' => $errors
+                ]);
             }
 
             $password = $this->get("security.password_encoder")
@@ -61,6 +64,7 @@ class UserController extends Controller
             }
 
             $this->userService->register($user, 'ROLE_USER');
+            $this->addFlash('message', "Registration successful!");
             return $this->redirectToRoute('security_login');
         }
 

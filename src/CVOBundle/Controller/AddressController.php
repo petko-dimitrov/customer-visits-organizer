@@ -58,6 +58,7 @@ class AddressController extends Controller
         if ($addressForm->isSubmitted() && $addressForm->isValid()) {
             $this->addressService->addAddress($address, $id);
 
+            $this->addFlash('message', "Address of " . $customer->getName() . " added successfully!");
             return $this->redirectToRoute('view_one', ['id' => $id]);
         }
 
@@ -107,6 +108,7 @@ class AddressController extends Controller
         if ($form->isSubmitted() && $form->isValid()) {
             $this->addressService->editAddress($address);
 
+            $this->addFlash('message', "Address of " . $customer->getName() . " edited successfully!");
             return $this->redirectToRoute("view_one", ['id' => $id]);
         }
 
