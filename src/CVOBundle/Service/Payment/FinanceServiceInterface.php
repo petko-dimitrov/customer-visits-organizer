@@ -13,5 +13,13 @@ interface FinanceServiceInterface
 
     public function getMonthlyBankIncome($year, $month);
 
+    public function getAnnualCashExpenses($year);
+
+    public function getAnnualBankExpenses($year);
+
+    public function getMonthlyCashExpenses($year, $month);
+
+    public function getMonthlyBankExpenses($year, $month);
+
     public function getFinanceInfo($year, $month);
 }

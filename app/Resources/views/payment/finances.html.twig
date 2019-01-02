@@ -13,7 +13,7 @@
         {{ form_row(form._token) }}
     </form>
     {#Income#}
-    <div class="col col-lg-6">
+    <div class="col col-lg-4">
         <table class="table table-hover table-striped table-bordered">
             <thead>
             <tr>
@@ -46,7 +46,7 @@
     </div>
 
     {#Expenses#}
-    <div class="col col-lg-6">
+    <div class="col col-lg-4">
         <table class="table table-hover table-striped table-bordered">
             <thead>
             <tr>
@@ -72,6 +72,39 @@
                     <p>Cash: ${{ financeHolder.annualCashExpenses }}</p>
                     <p>Bank: ${{ financeHolder.annualBankExpenses }}</p>
                     <p>Total: ${{ financeHolder.annualTotalExpenses }}</p>
+                </td>
+            </tr>
+            </tbody>
+        </table>
+    </div>
+
+    {#Profit#}
+    <div class="col col-lg-4">
+        <table class="table table-hover table-striped table-bordered">
+            <thead>
+            <tr>
+                <th colspan="2" scope="row">Profit</th>
+            </tr>
+            </thead>
+            <tbody>
+            <tr>
+                <th scope="row">
+                    {{ month }} {{ year }}
+                </th>
+                <td>
+                    <p>Cash: ${{ (financeHolder.monthlyCashIncome - financeHolder.monthlyCashExpenses)|number_format(2, '.', '') }}</p>
+                    <p>Bank: ${{ (financeHolder.monthlyBankIncome - financeHolder.monthlyBankExpenses)|number_format(2, '.', '') }}</p>
+                    <p>Total: ${{ (financeHolder.monthlyTotalIncome - financeHolder.monthlyTotalExpenses)|number_format(2, '.', '') }}</p>
+                </td>
+            </tr>
+            <tr>
+                <th scope="row">
+                    {{ year }}
+                </th>
+                <td>
+                    <p>Cash: ${{ (financeHolder.annualCashIncome - financeHolder.annualCashExpenses)|number_format(2, '.', '') }}</p>
+                    <p>Bank: ${{ (financeHolder.annualBankIncome - financeHolder.annualBankExpenses)|number_format(2, '.', '') }}</p>
+                    <p>Total: ${{ (financeHolder.annualTotalIncome - financeHolder.annualTotalExpenses)|number_format(2, '.', '') }}</p>
                 </td>
             </tr>
             </tbody>
