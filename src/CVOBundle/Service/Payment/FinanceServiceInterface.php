@@ -5,21 +5,13 @@ namespace CVOBundle\Service\Payment;
 
 interface FinanceServiceInterface
 {
-    public function getAnnualCashIncome($year);
+    public function getAnnualIncome($year, $paymentType);
 
-    public function getAnnualBankIncome($year);
+    public function getMonthlyIncome($year, $month, $paymentType);
 
-    public function getMonthlyCashIncome($year, $month);
+    public function getAnnualExpenses($year, $paymentType);
 
-    public function getMonthlyBankIncome($year, $month);
-
-    public function getAnnualCashExpenses($year);
-
-    public function getAnnualBankExpenses($year);
-
-    public function getMonthlyCashExpenses($year, $month);
-
-    public function getMonthlyBankExpenses($year, $month);
+    public function getMonthlyExpenses($year, $month, $paymentType);
 
     public function getFinanceInfo($year, $month);
 }

@@ -20,86 +20,51 @@ class FinanceService implements FinanceServiceInterface
         $this->financeHolder = $financeHolder;
     }
 
-
-    public function getAnnualCashIncome($year)
+    public function getAnnualIncome($year, $paymentType)
     {
         $startDate = new \DateTime("$year-01-01");
         $endDate = new \DateTime("$year-12-31");
 
-        return $this->visitRepository->findIncome($startDate, $endDate, 'cash');
+        return $this->visitRepository->findIncome($startDate, $endDate, $paymentType);
     }
 
-    public function getAnnualBankIncome($year)
-    {
-        $startDate = new \DateTime("$year-01-01");
-        $endDate = new \DateTime("$year-12-31");
-
-        return $this->visitRepository->findIncome($startDate, $endDate, 'bank');
-    }
-
-    public function getMonthlyCashIncome($year, $month)
+    public function getMonthlyIncome($year, $month, $paymentType)
     {
         $days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
         $startDate = new \DateTime("$year-$month-01");
         $endDate = new \DateTime("$year-$month-$days");
 
-        return $this->visitRepository->findIncome($startDate, $endDate, 'cash');
+        return $this->visitRepository->findIncome($startDate, $endDate, $paymentType);
     }
 
-    public function getMonthlyBankIncome($year, $month)
-    {
-        $days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-        $startDate = new \DateTime("$year-$month-01");
-        $endDate = new \DateTime("$year-$month-$days");
-
-        return $this->visitRepository->findIncome($startDate, $endDate, 'bank');
-    }
-
-    public function getAnnualCashExpenses($year)
+    public function getAnnualExpenses($year, $paymentType)
     {
         $startDate = new \DateTime("$year-01-01");
         $endDate = new \DateTime("$year-12-31");
 
-        return $this->expenseRepository->findExpensesSum($startDate, $endDate, 'cash');
+        return $this->expenseRepository->findExpensesSum($startDate, $endDate, $paymentType);
     }
 
-    public function getAnnualBankExpenses($year)
-    {
-        $startDate = new \DateTime("$year-01-01");
-        $endDate = new \DateTime("$year-12-31");
-
-        return $this->expenseRepository->findExpensesSum($startDate, $endDate, 'bank');
-    }
-
-    public function getMonthlyCashExpenses($year, $month)
+    public function getMonthlyExpenses($year, $month, $paymentType)
     {
         $days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
         $startDate = new \DateTime("$year-$month-01");
         $endDate = new \DateTime("$year-$month-$days");
 
-        return $this->expenseRepository->findExpensesSum($startDate, $endDate, 'cash');
-    }
-
-    public function getMonthlyBankExpenses($year, $month)
-    {
-        $days = cal_days_in_month(CAL_GREGORIAN, $month, $year);
-        $startDate = new \DateTime("$year-$month-01");
-        $endDate = new \DateTime("$year-$month-$days");
-
-        return $this->expenseRepository->findExpensesSum($startDate, $endDate, 'bank');
+        return $this->expenseRepository->findExpensesSum($startDate, $endDate, $paymentType);
     }
 
     public function getFinanceInfo($year, $month)
     {
-        $annualCashIncome = $this->getAnnualCashIncome($year)[0]['result'];
-        $annualBankIncome = $this->getAnnualBankIncome($year)[0]['result'];
-        $monthlyCashIncome = $this->getMonthlyCashIncome($year, $month)[0]['result'];
-        $monthlyBankIncome = $this->getMonthlyBankIncome($year, $month)[0]['result'];
+        $annualCashIncome = $this->getAnnualIncome($year, 'cash')[0]['result'];
+        $annualBankIncome = $this->getAnnualIncome($year,'bank')[0]['result'];
+        $monthlyCashIncome = $this->getMonthlyIncome($year, $month, 'cash')[0]['result'];
+        $monthlyBankIncome = $this->getMonthlyIncome($year, $month, 'bank')[0]['result'];
 
-        $annualCashExpenses = $this->getAnnualCashExpenses($year)[0]['result'];
-        $annualBankExpenses = $this->getAnnualBankExpenses($year)[0]['result'];
-        $monthlyCashExpenses = $this->getMonthlyCashExpenses($year, $month)[0]['result'];
-        $monthlyBankExpenses = $this->getMonthlyBankExpenses($year, $month)[0]['result'];
+        $annualCashExpenses = $this->getAnnualExpenses($year, 'cash')[0]['result'];
+        $annualBankExpenses = $this->getAnnualExpenses($year,'bank')[0]['result'];
+        $monthlyCashExpenses = $this->getMonthlyExpenses($year, $month, 'cash')[0]['result'];
+        $monthlyBankExpenses = $this->getMonthlyExpenses($year, $month,'bank')[0]['result'];
 
         $annualCashIncome ? $this->financeHolder->setAnnualCashIncome($annualCashIncome)
             : $this->financeHolder->setAnnualCashIncome('0.00');
@@ -121,4 +86,6 @@ class FinanceService implements FinanceServiceInterface
 
         return $this->financeHolder;
     }
+
+
 }
