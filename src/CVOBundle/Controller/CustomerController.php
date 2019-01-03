@@ -119,9 +119,12 @@ class CustomerController extends Controller
     public function viewOneAction($id)
     {
         $customer = $this->customerService->getCustomerById($id);
+        $googleMapsApiKey = $this->getParameter('google_maps_api_key');
 
-        return $this->render('customer/view_one.html.twig',
-            ['customer' => $customer]);
+        return $this->render('customer/view_one.html.twig', [
+            'customer' => $customer,
+            'apiKey' => $googleMapsApiKey
+        ]);
     }
 
     /**

@@ -135,6 +135,7 @@
             {% endif %}
             </tbody>
         </table>
+        <div class="col col-lg-4" id="map"></div>
     </div>
     {#Contacts#}
     <div class="col col-lg-4">
@@ -186,4 +187,63 @@
         </table>
     </div>
 {% endblock %}
+{% block javascripts %}
+    {{ parent() }}
+    <script src="https://unpkg.com/axios/dist/axios.min.js"></script>
+    <script>
+        function initMap() {
+            let address = `{{ customer.address.number }} {{ customer.address.street }} St {{ customer.address.town }} Bulgaria`;
 
+            axios.get('https://maps.googleapis.com/maps/api/geocode/json',{
+                params:{
+                    address:address,
+                    key: '{{ apiKey }}'
+                }
+            })
+                .then(function (response) {
+                    let coordinates = response.data.results[0].geometry.location;
+
+                    // Map options
+                    let options = {
+                        zoom: 15,
+                        center: coordinates
+                    };
+
+                    // New map
+                    let map = new google.maps.Map(document.getElementById('map'), options);
+
+                    let marker = {
+                        coords: coordinates,
+                        content:'<h3>{{ customer.name }}</h3>'
+                    };
+
+                    addMarker(marker);
+
+                    // Add Marker Function
+                    function addMarker(props){
+                        let marker = new google.maps.Marker({
+                            position:props.coords,
+                            map:map
+                        });
+
+                        // Check content
+                        if(props.content){
+                            let infoWindow = new google.maps.InfoWindow({
+                                content:props.content
+                            });
+
+                            marker.addListener('click', function(){
+                                infoWindow.open(map, marker);
+                            });
+                        }
+                    }
+                })
+                .catch(function (error) {
+                    console.log(error);
+                });
+        }
+    </script>
+    <script async defer
+            src="https://maps.googleapis.com/maps/api/js?key={{ apiKey }}&callback=initMap">
+    </script>
+{% endblock %}
