@@ -38,6 +38,33 @@ class Customer
     private $name;
 
     /**
+     * @Assert\Length(
+     *      min = 9,
+     *      max = 9,
+     *      minMessage = "Customer name must be at least {{ limit }} characters long",
+     *      maxMessage = "Customer name cannot be longer than {{ limit }} characters"
+     * )
+     *
+     * @var string
+     *
+     * @ORM\Column(name="bulstat", type="string", length=55, nullable=true)
+     */
+    private $bulstat;
+
+    /**
+     * @Assert\Length(
+     *      max = 255,
+     *      minMessage = "Customer name must be at least {{ limit }} characters long",
+     *      maxMessage = "Customer name cannot be longer than {{ limit }} characters"
+     * )
+     *
+     * @var string
+     *
+     * @ORM\Column(name="mol", type="string", length=255, nullable=true)
+     */
+    private $mol;
+
+    /**
      * @Assert\GreaterThan(0,
      *     message = "The monthly tax must be a positive number."
      * )
@@ -172,6 +199,44 @@ class Customer
     }
 
     /**
+     * @return string
+     */
+    public function getBulstat()
+    {
+        return $this->bulstat;
+    }
+
+    /**
+     * @param string $bulstat
+     * @return Customer
+     */
+    public function setBulstat($bulstat)
+    {
+        $this->bulstat = $bulstat;
+
+        return $this;
+    }
+
+    /**
+     * @return string
+     */
+    public function getMol()
+    {
+        return $this->mol;
+    }
+
+    /**
+     * @param string $mol
+     * @return Customer
+     */
+    public function setMol($mol)
+    {
+        $this->mol = $mol;
+
+        return $this;
+    }
+
+    /**
      * Set monthlyTax
      *
      * @param string $monthlyTax
@@ -217,30 +282,6 @@ class Customer
     public function getIsActive()
     {
         return $this->isActive;
-    }
-
-    /**
-     * Set nextVisit
-     *
-     * @param \DateTime $nextVisit
-     *
-     * @return Customer
-     */
-    public function setNextVisit($nextVisit)
-    {
-        $this->nextVisit = $nextVisit;
-
-        return $this;
-    }
-
-    /**
-     * Get nextVisit
-     *
-     * @return \DateTime
-     */
-    public function getNextVisit()
-    {
-        return $this->nextVisit;
     }
 
     /**

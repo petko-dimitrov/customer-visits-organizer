@@ -12,10 +12,10 @@
         <thead class="thead-dark">
         <tr>
             <th scope="col">Name</th>
+            <th scope="col">Monthly Tax</th>
             <th scope="col">Phone Number</th>
             <th scope="col">Email</th>
             <th scope="col">Website</th>
-            <th scope="col">Monthly Tax</th>
             <th scope="col">Visits</th>
             <th scope="col">Actions</th>
         </tr>
@@ -26,10 +26,10 @@
             <td>
                <a href="{{ path('view_one', {id: customer.id}) }}">{{ customer.name }}</a>
             </td>
+            <td>${{ customer.monthlyTax }}</td>
             <td><a href="tel:{{ customer.phone }}">{{ customer.phone }}</a></td>
             <td><a href="mailto:{{ customer.email }}">{{ customer.email }}</a></td>
             <td><a href="{{ customer.website }}" target="_blank">{{ customer.website }}</a></td>
-            <td>${{ customer.monthlyTax }}</td>
             <td>
                 <a href="{{ path('planned_customer_visits', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-info">Planned</button></a>
                 <a href="{{ path('all_customer_visits', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-primary">Past</button></a>

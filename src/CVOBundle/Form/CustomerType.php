@@ -20,6 +20,8 @@ class CustomerType extends AbstractType
     {
         $builder
             ->add('name', TextType::class)
+            ->add('bulstat', TextType::class)
+            ->add('mol', TextType::class)
             ->add('monthlyTax', MoneyType::class)
             ->add('moreInfo', TextType::class)
             ->add('phone', TextType::class)

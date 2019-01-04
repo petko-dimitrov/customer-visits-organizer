@@ -262,7 +262,7 @@ class VisitController extends Controller
     }
 
     /**
-     * @Route("/planned-by-customer/{id}" ,name="planned_customer_visits")
+     * @Route("/planned-by-customer/{id}", name="planned_customer_visits")
      * @Security("is_granted('IS_AUTHENTICATED_FULLY')")
      * @param $id
      * @param Request $request
