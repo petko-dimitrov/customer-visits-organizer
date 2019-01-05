@@ -34,7 +34,9 @@
                 <td>{{ expense.totalPrice }}</td>
                 <td>
                     <a href="{{ path('edit_expense', {id: expense.id}) }}"><button type="button" class="btn btn-small btn-success">Edit</button></a>
-                    <a href="{{ path('delete_expense', {id: expense.id}) }}"><button type="button" class="btn btn-small btn-danger">Delete</button></a>
+                    <a href="#expenseModal" data-toggle="modal" data-expense-id="{{ expense.id }}" data-expense-name="{{ expense.name }}">
+                        <button type="button" class="btn btn-small btn-danger">Delete</button>
+                    </a>
                 </td>
             </tr>
         {% else %}
@@ -44,5 +46,29 @@
         {% endfor %}
     </tbody>
 </table>
+    <!-- Modal Form -->
+    <div id="expenseModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Confirmation</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Do you really want to delete this expense? </p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a id="confirm-delete" href="#">
+                        <button type="button" class="btn btn-danger">Delete</button>
+                    </a>
+                </div>
+            </div>
+        </div>
+    </div>
+{% endblock %}
+{% block javascripts%}
+    {{ parent() }}
+    <script src="{{ asset('javascript/handleModal.js') }}"></script>
 {% endblock %}
 

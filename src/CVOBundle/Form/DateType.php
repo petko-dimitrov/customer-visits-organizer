@@ -20,7 +20,7 @@ class DateType extends AbstractType
         $builder
             ->add('year', ChoiceType::class, array(
                 'choices'  => array(
-                    ++$currentYear => $currentYear,
+                    $currentYear => $currentYear,
                     --$currentYear => $currentYear,
                     --$currentYear => $currentYear,
                     --$currentYear => $currentYear,

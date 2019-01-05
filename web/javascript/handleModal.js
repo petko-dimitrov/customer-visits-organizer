@@ -28,4 +28,14 @@ $(document).ready(function(){
         let path = `delete/${customerId}`;
         $('#confirm-delete').attr('href', path);
     });
+
+    //Delete expense
+    $("#expenseModal").on('show.bs.modal', function(event){
+        let button = $(event.relatedTarget);
+        let expenseId = button.data('expense-id');
+        let expenseName = button.data('expense-name');
+        $('.modal-body').html(`<p>Do you really want to delete this expense for ${expenseName}?</p>`);
+        let path = `delete/${expenseId}`;
+        $('#confirm-delete').attr('href', path);
+    });
 });
