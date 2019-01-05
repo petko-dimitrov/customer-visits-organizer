@@ -2,6 +2,13 @@
 
 {% block main %}
 <h1>{{ viewName }} Visits in {{ month }} {{ year }}</h1>
+<div class="text-center">
+{% if 'Past' in viewName %}
+    <img src="{{ asset('images/checked.png') }}" class="rounded">
+{% else %}
+    <img src="{{ asset('images/hourglass.png') }}" class="rounded">
+{% endif %}
+</div>
 {% if 'My' in viewName %}
     {% if 'Past' in viewName %}
         <form class="form-inline" action="{{ path('my_past_visits') }}" method="post">

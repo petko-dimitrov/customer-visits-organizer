@@ -30,11 +30,6 @@ legend {
     padding: 0;
 }
 
-.navbar-default {
-    background-color: #dd6666;
-    border-color: #E7E7E7;
-}
-
 .navbar-default .navbar-nav > li > a {
     color: #0088CC;
     font-size: 1.5em;
@@ -43,4 +38,14 @@ legend {
 #map{
     height:300px;
     width:100%;
+}
+
+img {
+    width: 75px;
+    height: 75px;
+}
+
+#headerImg {
+    width: 100%;
+    height: 200px;
 }

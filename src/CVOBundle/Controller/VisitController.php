@@ -28,7 +28,8 @@ class VisitController extends Controller
     private $userService;
 
     public function __construct(VisitServiceInterface $visitService,
-                                CustomerServiceInterface $customerService, UserServiceInterface $userService)
+                                CustomerServiceInterface $customerService,
+                                UserServiceInterface $userService)
     {
         $this->visitService = $visitService;
         $this->customerService = $customerService;
