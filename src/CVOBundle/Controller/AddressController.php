@@ -95,7 +95,7 @@ class AddressController extends Controller
         $errors = $validator->validate($address);
 
         if (count($errors) > 0) {
-            return $this->render('customer/create.html.twig', array(
+            return $this->render('address/edit.html.twig', array(
                 'address_form' => $form->createView(),
                 'id' => $id,
                 'addressId' => $addressId,

@@ -88,7 +88,7 @@
                             {% else %}
                                 <a href="{{ path('finish_visit', {id: visit.id}) }}"><button type="button" class="btn btn-small btn-primary">Finish</button></a>
                                 <a href="{{ path('edit_visit', {id: visit.id}) }}"><button type="button" class="btn btn-small btn-success">Edit</button></a>
-                                <a href="#myModal" data-toggle="modal" data-visit-id="{{ visit.id }}" data-customer-name="{{ visit.customer.name }}">
+                                <a href="#myModal" data-toggle="modal" data-id="{{ visit.id }}" data-name="{{ visit.customer.name }}" data-type="visit">
                                     <button type="button" class="btn btn-small btn-danger">Delete</button>
                                 </a>
                             {% endif %}
@@ -102,26 +102,6 @@
         {% endfor %}
         </tbody>
     </table>
-            <!-- Modal Form -->
-            <div id="myModal" class="modal fade">
-                <div class="modal-dialog">
-                    <div class="modal-content">
-                        <div class="modal-header">
-                            <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                            <h4 class="modal-title">Confirmation</h4>
-                        </div>
-                        <div class="modal-body">
-                            <p>Do you really want to delete this visit? </p>
-                        </div>
-                        <div class="modal-footer">
-                            <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                            <a id="confirm-delete" href="#">
-                                <button type="button" class="btn btn-danger">Delete</button>
-                            </a>
-                        </div>
-                    </div>
-                </div>
-            </div>
 {% endblock %}
 {% block javascripts%}
     {{ parent() }}

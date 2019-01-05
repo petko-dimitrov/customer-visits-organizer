@@ -63,6 +63,25 @@
                         </div>
                     {% endfor %}
                     {% block main %}{% endblock %}
+                    <div id="myModal" class="modal fade">
+                        <div class="modal-dialog">
+                            <div class="modal-content">
+                                <div class="modal-header">
+                                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                                    <h4 class="modal-title">Confirmation</h4>
+                                </div>
+                                <div class="modal-body">
+                                    <p>Do you really want to delete this?</p>
+                                </div>
+                                <div class="modal-footer">
+                                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                                    <a id="confirm-delete" href="#">
+                                        <button type="button" class="btn btn-danger">Delete</button>
+                                    </a>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
                 </div>
             </div>
         {% endblock %}
@@ -83,6 +102,7 @@
                     crossorigin="anonymous"></script>
             <script src="https://maxcdn.bootstrapcdn.com/bootstrap/3.3.7/js/bootstrap.min.js" integrity="sha384-Tc5IQib027qvyjSMfHjOMaLkfuWVxZxUPnCJA7l2mCWNIpG9mGCD8wGNIcPD7Txa" crossorigin="anonymous"></script>
             <script src="{{ asset('javascript/notifications.js') }}"></script>
+            <script src="{{ asset('javascript/handleModal.js') }}"></script>
         {% endblock %}
     </body>
 </html>

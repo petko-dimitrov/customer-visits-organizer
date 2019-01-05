@@ -50,12 +50,10 @@
                 {% if customer.isActive %}
                     <td>
                         Yes
-                        <a href="{{ path('archive_customer', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-warning">Archive</button></a>
                     </td>
                 {% else %}
                     <td>
                         No
-                        <a href="{{ path('activate_customer', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-warning">Activate</button></a>
                     </td>
                 {% endif %}
             </tr>
@@ -82,9 +80,11 @@
                     </a>
                 </td>
                 <td>
-                    <a href="{{ path('delete_customer', {id: customer.id}) }}">
-                        <button type="button" class="btn btn-small btn-danger btn-block">Delete</button>
-                    </a>
+                    {% if customer.isActive %}
+                    <a href="{{ path('archive_customer', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-warning btn-block">Archive</button></a>
+                {% else %}
+                    <a href="{{ path('activate_customer', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-warning btn-block">Activate</button></a>
+                {% endif %}
                 </td>
             </tr>
             </tbody>
@@ -178,8 +178,8 @@
                         </a>
                     </td>
                     <td>
-                        <a href="{{ path('delete_contact', {id: contact.id}) }}">
-                            <button type="button" class="btn btn-small btn-danger btn-block">Delete</button>
+                        <a href="#contactModal" data-toggle="modal" data-id="{{ contact.id }}" data-name="{{ customer.name }}">
+                        <button type="button" class="btn btn-small btn-danger btn-block">Delete</button>
                         </a>
                     </td>
                 </tr>
@@ -193,6 +193,25 @@
             </tr>
             </tbody>
         </table>
+    </div>
+    <div id="contactModal" class="modal fade">
+        <div class="modal-dialog">
+            <div class="modal-content">
+                <div class="modal-header">
+                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
+                    <h4 class="modal-title">Confirmation</h4>
+                </div>
+                <div class="modal-body">
+                    <p>Do you really want to delete this?</p>
+                </div>
+                <div class="modal-footer">
+                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
+                    <a id="confirm-delete" href="#">
+                        <button type="button" class="btn btn-danger">Delete</button>
+                    </a>
+                </div>
+            </div>
+        </div>
     </div>
 {% endblock %}
 {% block javascripts %}

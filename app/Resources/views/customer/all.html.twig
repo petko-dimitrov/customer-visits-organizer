@@ -1,7 +1,7 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
-    <h1>All {% if areActive %}Active {% else %}Archived {% endif %}Customers</h1>
+    <h1>{% if areActive %}Active {% else %}Archived {% endif %}Customers</h1>
     <button type="button" class="btn btn-light"><a href="{{ path('create_customer') }}">Create Customer</a></button>
     {% if areActive %}
         <button type="button" class="btn btn-light"><a href="{{ path('archived_customers') }}">View Archived Customers</a></button>
@@ -16,8 +16,8 @@
             <th scope="col">Phone Number</th>
             <th scope="col">Email</th>
             <th scope="col">Website</th>
-            <th scope="col">Visits</th>
             <th scope="col">Actions</th>
+            <th scope="col">Visits</th>
         </tr>
         </thead>
         <tbody>
@@ -31,18 +31,6 @@
             <td><a href="mailto:{{ customer.email }}">{{ customer.email }}</a></td>
             <td><a href="{{ customer.website }}" target="_blank">{{ customer.website }}</a></td>
             <td>
-                <a href="{{ path('planned_customer_visits', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-info">Planned</button></a>
-                <a href="{{ path('all_customer_visits', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-primary">Past</button></a>
-                {% if customer.isActive %}
-                    <a href="{{ path('add_visit', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-success">Add</button></a>
-                {% endif %}
-                {% for visit in customer.visits|sortbyfield('date') %}
-                    {% if visit.isFinished == false %}
-                        <p>{{ visit.date|date("d-M-Y") }}</p>
-                    {% endif %}
-                {% endfor %}
-            </td>
-            <td>
                 <a href="{{ path('view_one', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-primary">More Info</button></a>
                 <a href="{{ path('edit_customer', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-success">Edit</button></a>
                 {% if areActive %}
@@ -52,6 +40,18 @@
                     <a href="#customerModal" data-toggle="modal" data-customer-id="{{ customer.id }}" data-customer-name="{{ customer.name }}">
                         <button type="button" class="btn btn-small btn-danger">Delete</button>
                     </a>
+                {% endif %}
+            </td>
+            <td>
+                <a href="{{ path('planned_customer_visits', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-info">Planned</button></a>
+                {% for visit in customer.visits|sortbyfield('date') %}
+                    {% if visit.isFinished == false %}
+                        <p>{{ visit.date|date("d-M-Y") }}</p>
+                    {% endif %}
+                {% endfor %}
+                <a href="{{ path('all_customer_visits', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-primary">Past</button></a>
+                {% if customer.isActive %}
+                    <a href="{{ path('add_visit', {id: customer.id}) }}"><button type="button" class="btn btn-small btn-success">Add</button></a>
                 {% endif %}
             </td>
         </tr>
@@ -78,8 +78,4 @@
             </div>
         </div>
     </div>
-{% endblock %}
-{% block javascripts%}
-    {{ parent() }}
-    <script src="{{ asset('javascript/handleModal.js') }}"></script>
 {% endblock %}

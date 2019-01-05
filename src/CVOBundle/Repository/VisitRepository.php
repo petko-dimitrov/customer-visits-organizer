@@ -38,40 +38,34 @@ class VisitRepository extends \Doctrine\ORM\EntityRepository
 
     public function findVisits($startDate, $endDate, $isFinished)
     {
-        $query = $this->_em->createQuery(
-            "SELECT v
-                FROM CVOBundle:Visit v
-                WHERE v.date >= :startDate
-                AND v.date <= :endDate
-                AND v.isFinished = :isFinished
-                ORDER BY v.date"
-        );
-
-        $query->setParameter('startDate', $startDate);
-        $query->setParameter('endDate', $endDate);
-        $query->setParameter('isFinished', $isFinished);
-
-        return $query->getResult();
+        return $this->createQueryBuilder('v')
+            ->where('v.date >= :startDate
+            AND v.date <= :endDate
+            AND v.isFinished = :isFinished')
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('isFinished', $isFinished)
+            ->orderBy('v.date')
+            ->orderBy('v.time')
+            ->getQuery()
+            ->getResult();
     }
 
     public function findVisitsByCustomer($customer, $startDate, $endDate, $isFinished)
     {
-        $query = $this->_em->createQuery(
-            "SELECT v
-                FROM CVOBundle:Visit v
-                WHERE v.customer = :customer
-                AND v.date >= :startDate
-                AND v.date <= :endDate
-                AND v.isFinished = :isFinished
-                ORDER BY v.date"
-        );
-
-        $query->setParameter('customer', $customer);
-        $query->setParameter('startDate', $startDate);
-        $query->setParameter('endDate', $endDate);
-        $query->setParameter('isFinished', $isFinished);
-
-        return $query->getResult();
+        return $this->createQueryBuilder('v')
+            ->where('v.customer = :customer
+            AND v.date >= :startDate
+            AND v.date <= :endDate
+            AND v.isFinished = :isFinished')
+            ->setParameter('customer', $customer)
+            ->setParameter('startDate', $startDate)
+            ->setParameter('endDate', $endDate)
+            ->setParameter('isFinished', $isFinished)
+            ->orderBy('v.date')
+            ->orderBy('v.time')
+            ->getQuery()
+            ->getResult();
     }
 
     public function findVisitsByUser($userId, $startDate, $endDate, $isFinished)
@@ -86,6 +80,7 @@ class VisitRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter('endDate', $endDate)
             ->setParameter('isFinished', $isFinished)
             ->orderBy('v.date')
+            ->orderBy('v.time')
             ->getQuery()
             ->getResult();
     }

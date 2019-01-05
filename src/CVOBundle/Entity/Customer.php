@@ -39,8 +39,7 @@ class Customer
 
     /**
      * @Assert\Length(
-     *      min = 9,
-     *      max = 9,
+     *      max = 55,
      *      minMessage = "Customer name must be at least {{ limit }} characters long",
      *      maxMessage = "Customer name cannot be longer than {{ limit }} characters"
      * )

@@ -1,11 +1,12 @@
 $(document).ready(function(){
-    //Delete visit
+    //Delete confirmation
     $("#myModal").on('show.bs.modal', function(event){
         let button = $(event.relatedTarget);  // Button that triggered the modal
-        let visitId = button.data('visit-id'); // Extract value from data-* attributes
-        let customerName = button.data('customer-name');
-        $('.modal-body').html(`<p>Do you really want to delete this visit to ${customerName}?</p>`);
-        let path = `delete/${visitId}`;
+        let id = button.data('id'); // Extract value from data-* attributes
+        let name = button.data('name');
+        let type = button.data('type');
+        $('.modal-body').html(`<p>Do you really want to delete ${name} ${type}?</p>`);
+        let path = `delete/${id}`;
         $('#confirm-delete').attr('href', path);
     });
 
@@ -14,28 +15,18 @@ $(document).ready(function(){
         let button = $(event.relatedTarget);
         let visitId = button.data('visit-id');
         let customerName = button.data('customer-name');
-        $('.modal-body').html(`<p>Do you really want to delete this visit to ${customerName}?</p>`);
+        $('.modal-body').html(`<p>Do you really want to delete ${customerName} visit?</p>`);
         let path = `/visit/delete/${visitId}`;
         $('#confirm-delete').attr('href', path);
     });
 
-    //Delete customer
-    $("#customerModal").on('show.bs.modal', function(event){
+    //Delete contact
+    $("#contactModal").on('show.bs.modal', function(event){
         let button = $(event.relatedTarget);
-        let customerId = button.data('customer-id');
-        let customerName = button.data('customer-name');
-        $('.modal-body').html(`<p>Do you really want to delete ${customerName}?</p>`);
-        let path = `delete/${customerId}`;
-        $('#confirm-delete').attr('href', path);
-    });
-
-    //Delete expense
-    $("#expenseModal").on('show.bs.modal', function(event){
-        let button = $(event.relatedTarget);
-        let expenseId = button.data('expense-id');
-        let expenseName = button.data('expense-name');
-        $('.modal-body').html(`<p>Do you really want to delete this expense for ${expenseName}?</p>`);
-        let path = `delete/${expenseId}`;
+        let id = button.data('id');
+        let name = button.data('name');
+        $('.modal-body').html(`<p>Do you really want to delete ${name} contact?</p>`);
+        let path = `/contact/delete/${id}`;
         $('#confirm-delete').attr('href', path);
     });
 });
