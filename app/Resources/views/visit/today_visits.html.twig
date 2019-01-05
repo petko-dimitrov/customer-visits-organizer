@@ -1,30 +1,21 @@
 {% extends 'base.html.twig' %}
 
 {% block main %}
-<h1>{{ viewName }} Visits in {{ year }}</h1>
+<h1>Planned Visits for Today</h1>
 <div class="text-center">
-    {% if 'Past' in viewName %}
-    <img src="{{ asset('images/checked.png') }}" class="rounded">
-{% else %}
     <img src="{{ asset('images/hourglass.png') }}" class="rounded">
-{% endif %}
 </div>
-{% if 'Past' in viewName %}
-    <form class="form-inline" action="{{ path('all_customer_visits', {id: customer.id}) }}" method="post">
-{% else %}
-    <form class="form-inline" action="{{ path('planned_customer_visits', {id: customer.id}) }}" method="post">
-{% endif %}
-    <div class="form-group">
-        {{ form_row(form.year) }}
-    </div>
-    <button type="submit" class="btn btn-info">List</button>
-    {{ form_row(form._token) }}
-</form>
-    {% if 'Past' in viewName %}
-        <button id="planned" type="button" class="btn btn-light"><a href="{{ path('planned_customer_visits', {id: customer.id}) }}">View Planned Visits</a></button>
-    {% else %}
-        <button id="past" type="button" class="btn btn-light"><a href="{{ path('all_customer_visits', {id: customer.id}) }}">View Past Visits</a></button>
-    {% endif %}
+    <form class="form-inline" action="{{ path('forthcoming_visits') }}" method="post">
+        <div class="form-group">
+            {{ form_row(form.year) }}
+        </div>
+        <div class="form-group">
+            {{ form_row(form.month) }}
+        </div>
+        <button type="submit" class="btn btn-info">List</button>
+        {{ form_row(form._token) }}
+    </form>
+    <button type="button" class="btn btn-light"><a href="{{ path('finished_visits') }}">View Past Visits</a></button>
     <table class="table table-hover table-striped table-bordered">
         <thead class="thead-dark">
         <tr>
@@ -69,7 +60,7 @@
                         {% else %}
                             <a href="{{ path('finish_visit', {id: visit.id}) }}"><button type="button" class="btn btn-small btn-primary">Finish</button></a>
                             <a href="{{ path('edit_visit', {id: visit.id}) }}"><button type="button" class="btn btn-small btn-success">Edit</button></a>
-                            <a href="#byCustomerModal" data-toggle="modal" data-visit-id="{{ visit.id }}" data-customer-name="{{ visit.customer.name }}">
+                            <a href="#myModal" data-toggle="modal" data-id="{{ visit.id }}" data-name="{{ visit.customer.name }}" data-type="visit">
                                 <button type="button" class="btn btn-small btn-danger">Delete</button>
                             </a>
                         {% endif %}
@@ -83,24 +74,4 @@
         {% endfor %}
         </tbody>
     </table>
-    <!-- Modal Form -->
-    <div id="byCustomerModal" class="modal fade">
-        <div class="modal-dialog">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <button type="button" class="close" data-dismiss="modal" aria-hidden="true">&times;</button>
-                    <h4 class="modal-title">Confirmation</h4>
-                </div>
-                <div class="modal-body">
-                    <p>Do you really want to delete this visit?</p>
-                </div>
-                <div class="modal-footer">
-                    <button type="button" class="btn btn-default" data-dismiss="modal">Cancel</button>
-                    <a id="confirm-delete" href="#">
-                        <button type="button" class="btn btn-danger">Delete</button>
-                    </a>
-                </div>
-            </div>
-        </div>
-    </div>
     {% endblock %}

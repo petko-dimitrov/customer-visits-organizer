@@ -39,7 +39,7 @@
     {% endif %}
 {% else %}
     {% if 'Past' in viewName %}
-        <button type="button" class="btn btn-light"><a href="{{ path('forthcoming_visits') }}">View Planned Visits</a></button>
+        <button type="button" class="btn btn-light"><a href="{{ path('forthcoming_visits') }}">View Today Visits</a></button>
     {% else %}
         <button type="button" class="btn btn-light"><a href="{{ path('finished_visits') }}">View Past Visits</a></button>
     {% endif %}
@@ -102,9 +102,5 @@
         {% endfor %}
         </tbody>
     </table>
-{% endblock %}
-{% block javascripts%}
-    {{ parent() }}
-    <script src="{{ asset('javascript/handleModal.js') }}"></script>
 {% endblock %}
 

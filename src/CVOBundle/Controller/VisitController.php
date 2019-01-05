@@ -175,15 +175,18 @@ class VisitController extends Controller
             $data = $form->getData();
             $year = $data['year'];
             $month = $data['month'];
+            $visits = $this->visitService->getAllVisits($year, $month, false);
+            $viewName = 'All Planned ';
         } else {
-            $date = new \DateTime();
-            $year = $date->format('Y');
-            $month = $date->format('m');
-        }
+            $visits = $this->visitService->getTodayVisits();
+            $viewName = 'Today\'s';
 
-        /** @var Visit[] $visits */
-        $visits = $this->visitService->getAllVisits($year, $month, false);
-        $viewName = 'All Planned ';
+            return $this->render('visit/today_visits.html.twig', [
+                'visits' => $visits,
+                'viewName' => $viewName,
+                'form' => $form->createView(),
+            ]);
+        }
 
         return $this->render('visit/all_visits.html.twig', [
             'visits' => $visits,

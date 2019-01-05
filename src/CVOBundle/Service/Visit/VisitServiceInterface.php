@@ -19,6 +19,8 @@ interface VisitServiceInterface
 
     public function getAllByCustomer($customer, $year, $isFinished);
 
+    public function getTodayVisits();
+
     public function finishVisit($id);
 
     public function editVisit(Visit $visit);

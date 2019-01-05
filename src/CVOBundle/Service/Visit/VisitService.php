@@ -64,6 +64,13 @@ class VisitService implements VisitServiceInterface
         return $this->visitRepository->findVisitsByUser($userId, $startDate, $endDate, $isFinished);
     }
 
+    public function getTodayVisits()
+    {
+        return $this->visitRepository->findBy([
+            'isFinished' => false, 'date' => new \DateTime('now')],
+            ['date' => 'ASC', 'time' => 'ASC']);
+    }
+
     public function getVisitById($id)
     {
         return $this->visitRepository->find($id);
@@ -148,5 +155,4 @@ class VisitService implements VisitServiceInterface
     {
         $this->visitRepository->deleteUsers($visitId);
     }
-
 }

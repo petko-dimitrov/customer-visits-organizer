@@ -2,6 +2,7 @@
 
 namespace CVOBundle\Repository;
 use CVOBundle\Entity\Visit;
+use DateInterval;
 use Doctrine\ORM\EntityManagerInterface;
 use Doctrine\ORM\Mapping;
 
@@ -46,7 +47,7 @@ class VisitRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter('endDate', $endDate)
             ->setParameter('isFinished', $isFinished)
             ->orderBy('v.date')
-            ->orderBy('v.time')
+            ->addOrderBy('v.time')
             ->getQuery()
             ->getResult();
     }
@@ -63,7 +64,7 @@ class VisitRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter('endDate', $endDate)
             ->setParameter('isFinished', $isFinished)
             ->orderBy('v.date')
-            ->orderBy('v.time')
+            ->addOrderBy('v.time')
             ->getQuery()
             ->getResult();
     }
@@ -80,7 +81,7 @@ class VisitRepository extends \Doctrine\ORM\EntityRepository
             ->setParameter('endDate', $endDate)
             ->setParameter('isFinished', $isFinished)
             ->orderBy('v.date')
-            ->orderBy('v.time')
+            ->addOrderBy('v.time')
             ->getQuery()
             ->getResult();
     }
